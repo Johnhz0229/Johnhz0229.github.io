@@ -440,6 +440,17 @@
         gap: 0.5rem;
       }
     }
+
+    /* SCROLL ANIMATION */
+    .reveal {
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.8s cubic-bezier(0.2, 1, 0.3, 1), transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
 
@@ -776,6 +787,30 @@
       requestAnimationFrame(animate);
     }
     animate();
+  </script>
+
+  <script>
+    // Scroll Reveal Animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
+
+    document.querySelectorAll('.section-label, .exp-item, .post-item, .contact-heading, .contact-link').forEach((el) => {
+      el.classList.add('reveal');
+      observer.observe(el);
+    });
+    
+    // Animate hero section immediately
+    document.querySelectorAll('.hero-tag, .hero-name, .hero-desc, .hero-links').forEach((el, i) => {
+      el.classList.add('reveal');
+      el.style.transitionDelay = `${i * 0.1}s`;
+      setTimeout(() => el.classList.add('visible'), 100);
+    });
   </script>
 </body>
 
