@@ -36,11 +36,31 @@
 
     body {
       font-family: var(--sans);
-      background: var(--white);
+      background: transparent;
       color: var(--black);
       font-size: 16px;
       line-height: 1.7;
       font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* BACKGROUND ANIMATION */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background: linear-gradient(-45deg, #ffffff, #eaf2fb, #f7eff9, #ebf0f5);
+      background-size: 400% 400%;
+      animation: gradientBG 18s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     /* NAV */
@@ -407,6 +427,7 @@
 </head>
 
 <body>
+  <div class="bg-animation"></div>
 
   <nav>
     <a href="#about" class="nav-logo">John Huang</a>
