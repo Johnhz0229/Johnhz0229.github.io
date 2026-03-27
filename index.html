@@ -131,6 +131,26 @@
       min-height: 100vh;
     }
 
+    .hero-avatar {
+      margin-bottom: 2rem;
+    }
+
+    .hero-avatar img {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      filter: grayscale(15%) contrast(105%);
+      transition: transform 0.4s ease, filter 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .hero-avatar img:hover {
+      transform: translateY(-4px);
+      filter: grayscale(0%) contrast(100%);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+    }
+
     .hero-tag {
       font-family: var(--mono);
       font-size: 12px;
@@ -501,6 +521,9 @@
 
   <!-- ABOUT -->
   <section id="about">
+    <div class="hero-avatar">
+      <img src="photo.jpg" alt="John Huang">
+    </div>
     <div class="hero-tag">Based in Frankfurt, Germany</div>
     <h1 class="hero-name">John Huang<br><span
         style="font-family: 'Kaiti SC', 'STKaiti', '华文楷体', 'KaiTi', '楷体', serif; font-weight: normal; font-size: 0.55em; font-style: normal; color: var(--gray-400);">黄正</span>
@@ -844,7 +867,7 @@
     });
     
     // Animate hero section immediately
-    document.querySelectorAll('.hero-tag, .hero-name, .hero-desc, .hero-links').forEach((el, i) => {
+    document.querySelectorAll('.hero-avatar, .hero-tag, .hero-name, .hero-desc, .hero-links').forEach((el, i) => {
       el.classList.add('reveal');
       el.style.transitionDelay = `${i * 0.1}s`;
       setTimeout(() => el.classList.add('visible'), 100);
