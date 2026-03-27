@@ -411,7 +411,7 @@
     /* FOOTER */
     footer {
       border-top: 1px solid var(--gray-200);
-      padding: 2rem 3rem;
+      padding: 2rem 3rem 8rem;
       max-width: 860px;
       margin: 0 auto;
       display: flex;
@@ -454,7 +454,7 @@
       }
 
       footer {
-        padding: 2rem 1.5rem;
+        padding: 2rem 1.5rem 6rem;
         flex-direction: column;
         gap: 0.5rem;
       }
@@ -463,10 +463,21 @@
     /* SCROLL ANIMATION */
     .reveal {
       opacity: 0;
-      transform: translateY(15px);
-      transition: opacity 0.8s cubic-bezier(0.2, 1, 0.3, 1), transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+      transform: translateY(30px);
+      transition: opacity 1.2s cubic-bezier(0.2, 1, 0.3, 1), transform 1.2s cubic-bezier(0.2, 1, 0.3, 1);
     }
     .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .word-float {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 0.8s cubic-bezier(0.2, 1, 0.3, 1), transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+    .reveal.visible .word-float {
       opacity: 1;
       transform: translateY(0);
     }
@@ -675,19 +686,32 @@
 
   <!-- CONTACT -->
   <section id="contact">
-    <div class="section-label">Contact</div>
-    <h2 class="contact-heading">Let's talk about<br><em>business, finance, research, life<br>or anything in
-        between.</em></h2>
+    <div class="section-label reveal">Contact</div>
+    <h2 class="contact-heading reveal">
+      <span class="word-float" style="transition-delay: 0.1s;">Let's</span> 
+      <span class="word-float" style="transition-delay: 0.15s;">talk</span> 
+      <span class="word-float" style="transition-delay: 0.2s;">about</span><br>
+      <em>
+        <span class="word-float" style="transition-delay: 0.25s;">business,</span> 
+        <span class="word-float" style="transition-delay: 0.3s;">finance,</span> 
+        <span class="word-float" style="transition-delay: 0.35s;">research,</span> 
+        <span class="word-float" style="transition-delay: 0.4s;">life</span><br>
+        <span class="word-float" style="transition-delay: 0.45s;">or</span> 
+        <span class="word-float" style="transition-delay: 0.5s;">anything</span> 
+        <span class="word-float" style="transition-delay: 0.55s;">in</span> 
+        <span class="word-float" style="transition-delay: 0.6s;">between.</span>
+      </em>
+    </h2>
     <div class="contact-grid">
-      <a href="mailto:zhehua6@gmail.com" class="contact-link">
+      <a href="mailto:zhehua6@gmail.com" class="contact-link reveal" style="transition-delay: 0.7s;">
         <span class="contact-link-label">Email</span>
         <span class="contact-link-value">zhehua6@gmail.com</span>
       </a>
-      <a href="https://linkedin.com/in/john-zheng-huang" target="_blank" class="contact-link">
+      <a href="https://linkedin.com/in/john-zheng-huang" target="_blank" class="contact-link reveal" style="transition-delay: 0.8s;">
         <span class="contact-link-label">LinkedIn</span>
         <span class="contact-link-value">John Huang 黄正</span>
       </a>
-      <a href="https://github.com/Johnhz0229" target="_blank" class="contact-link">
+      <a href="https://github.com/Johnhz0229" target="_blank" class="contact-link reveal" style="transition-delay: 0.9s;">
         <span class="contact-link-label">GitHub</span>
         <span class="contact-link-value">@Johnhz0229</span>
       </a>
@@ -812,7 +836,7 @@
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
+    }, { threshold: 0.05, rootMargin: "0px 0px -50px 0px" });
 
     document.querySelectorAll('.section-label, .exp-item, .post-item, .contact-heading, .contact-link, .skill-group').forEach((el) => {
       el.classList.add('reveal');
