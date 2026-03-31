@@ -371,6 +371,101 @@
       color: var(--gray-400);
     }
 
+    /* PROJECTS */
+    .project-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .project-item {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 2rem;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--gray-200);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .project-item:first-child {
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .project-meta {
+      padding-top: 2px;
+    }
+
+    .project-index {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gray-400);
+      letter-spacing: 0.08em;
+    }
+
+    .project-status {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      border: 1px solid var(--gray-200);
+      padding: 2px 8px;
+      border-radius: 2px;
+      margin-top: 8px;
+    }
+
+    .project-status.active {
+      color: #6a8f6a;
+      border-color: #c4d9c4;
+    }
+
+    .project-title {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+      line-height: 1.75;
+      max-width: 520px;
+    }
+
+    .project-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .project-link {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--black);
+      text-decoration: none;
+      border-bottom: 1px solid var(--black);
+      padding-bottom: 1px;
+      transition: opacity 0.2s;
+    }
+
+    .project-link:hover {
+      opacity: 0.4;
+    }
+
+    @media (max-width: 680px) {
+      .project-item {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+    }
+
     /* CONTACT */
     #contact {
       min-height: 60vh;
@@ -513,6 +608,7 @@
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#experience">Work</a></li>
+      <li><a href="#projects">Projects</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#blog">Writing</a></li>
       <li><a href="#contact">Contact</a></li>
@@ -624,6 +720,40 @@
             <span class="tag">Market Intelligence</span>
             <span class="tag">Strategic Partnerships</span>
             <span class="tag">Risk Management</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" style="min-height: auto; padding-top: 2rem; padding-bottom: 4rem;">
+    <div class="section-label reveal">Projects</div>
+    <div class="project-list">
+
+      <div class="project-item reveal">
+        <div class="project-meta">
+          <div class="project-index">01</div>
+          <div class="project-status active">In Development</div>
+        </div>
+        <div>
+          <div class="project-title">AML Transaction Monitor</div>
+          <p class="project-desc">
+            A machine-learning pipeline for real-time detection of suspicious financial activity.
+            Combines graph-based transaction network analysis with supervised anomaly detection to flag
+            potential money-laundering patterns across account clusters — built to financial-grade
+            explainability standards (SHAP values, audit trail).
+          </p>
+          <div class="tag-row" style="margin-top: 0.75rem;">
+            <span class="tag">Python</span>
+            <span class="tag">Graph ML</span>
+            <span class="tag">Anomaly Detection</span>
+            <span class="tag">SHAP</span>
+            <span class="tag">AML / FinCrime</span>
+          </div>
+          <div class="project-footer">
+            <a href="https://github.com/Johnhz0229" target="_blank" class="project-link">GitHub ↗</a>
           </div>
         </div>
       </div>
@@ -861,7 +991,7 @@
       });
     }, { threshold: 0.05, rootMargin: "0px 0px -50px 0px" });
 
-    document.querySelectorAll('.section-label, .exp-item, .post-item, .contact-heading, .contact-link, .skill-group').forEach((el) => {
+    document.querySelectorAll('.section-label, .exp-item, .project-item, .post-item, .contact-heading, .contact-link, .skill-group').forEach((el) => {
       el.classList.add('reveal');
       observer.observe(el);
     });
