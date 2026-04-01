@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes on the Maximum Entropy Principle — John Huang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #fafafa;
+      --gray-100: #f4f4f4;
+      --gray-200: #e8e8e8;
+      --gray-400: #999;
+      --gray-600: #555;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --mono: 'DM Mono', monospace;
+      --sans: 'Inter', system-ui, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: transparent;
+      color: var(--black);
+      font-size: 16px;
+      line-height: 1.7;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -3;
+      background: linear-gradient(-45deg, #ffffff, #fbfcfe, #ffffff, #f8f9fb, #ffffff);
+      background-size: 400% 400%;
+      animation: gradientBG 20s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 3rem;
+      background: rgba(250, 250, 250, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      color: var(--black);
+    }
+
+    .nav-back {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      color: var(--gray-600);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gray-200);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .nav-back:hover {
+      color: var(--black);
+      border-color: var(--black);
+    }
+
+    .article-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 9rem 3rem 8rem;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .article-date {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gray-400);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .article-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--gray-400);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--gray-100);
+      padding: 3px 8px;
+      border-radius: 2px;
+    }
+
+    .article-title {
+      font-family: var(--serif);
+      font-size: clamp(1.9rem, 4vw, 2.75rem);
+      line-height: 1.2;
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+
+    .article-title em {
+      font-style: italic;
+      color: var(--gray-600);
+    }
+
+    .article-subtitle {
+      font-size: 1.05rem;
+      color: var(--gray-600);
+      line-height: 1.7;
+      font-weight: 300;
+      margin-bottom: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .article-body h2 {
+      font-family: var(--serif);
+      font-size: 1.45rem;
+      font-weight: 400;
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+
+    .article-body h3 {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-600);
+      margin-top: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .article-body p {
+      margin-bottom: 1.4rem;
+      font-size: 1rem;
+      line-height: 1.85;
+      font-weight: 300;
+      color: #1a1a1a;
+    }
+
+    .article-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .article-body .note {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--gray-400);
+      line-height: 1.6;
+      border-left: 2px solid var(--gray-200);
+      padding-left: 1rem;
+      margin: 2rem 0;
+    }
+
+    .article-body .math-block {
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      color: var(--gray-600);
+      background: var(--gray-100);
+      padding: 1rem 1.25rem;
+      border-radius: 3px;
+      margin: 1.5rem 0;
+      line-height: 1.8;
+      overflow-x: auto;
+    }
+
+    .footnotes {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .footnotes-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 1rem;
+    }
+
+    .footnotes ol {
+      padding-left: 1.4rem;
+    }
+
+    .footnotes li {
+      font-size: 0.8rem;
+      color: var(--gray-600);
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+      font-weight: 300;
+    }
+
+    sup {
+      font-size: 0.7rem;
+      color: var(--gray-400);
+      font-family: var(--mono);
+    }
+
+    @media (max-width: 640px) {
+      nav {
+        padding: 1rem 1.5rem;
+      }
+
+      .article-wrap {
+        padding: 7rem 1.5rem 5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-animation"></div>
+
+  <nav>
+    <a href="../index.html" class="nav-logo">JH</a>
+    <a href="../index.html#blog" class="nav-back">← Writing</a>
+  </nav>
+
+  <main class="article-wrap">
+
+    <div class="article-meta">
+      <span class="article-date">Dec 2024</span>
+      <span class="article-tag">Mathematics · Philosophy</span>
+    </div>
+
+    <h1 class="article-title">Notes on the <em>Maximum Entropy</em> Principle</h1>
+
+    <p class="article-subtitle">
+      Among all probability distributions consistent with what we know, choose the one that is maximally noncommittal about what we do not know. This deceptively simple instruction turns out to be one of the deepest ideas in the epistemology of inference — with surprising reach across physics, ecology, economics, and machine learning.
+    </p>
+
+    <div class="article-body">
+
+      <h2>1. The Principle, Stated Plainly</h2>
+
+      <p>
+        Here is the problem. You know something about a random variable — perhaps its mean, or its variance, or some other expectation value. You do not know the full probability distribution. There are, in general, infinitely many distributions consistent with your constraints. Which one should you use?
+      </p>
+
+      <p>
+        The maximum entropy principle (MaxEnt) gives a crisp answer: use the one with the highest entropy. Among all distributions that satisfy your constraints, select the distribution that is most spread out, most uncertain, most noncommittal about everything your constraints do not pin down. Do not, in other words, add information you do not have.
+      </p>
+
+      <p>
+        Stated this way, the principle sounds like a tiebreaker rule, a convention for resolving an underspecified problem. In fact it is something considerably more interesting. It is a claim about the epistemically correct way to represent uncertainty — a claim that has been derived from first principles, connected to the deepest structures of statistical mechanics, and applied fruitfully across an extraordinary range of scientific domains. These notes try to trace that argument from foundations to implications, pausing along the way at some of the places where the principle is most illuminating and most contested.
+      </p>
+
+      <p>
+        The non-obviousness of MaxEnt deserves emphasis at the outset. When we know nothing at all — no constraints — the uniform distribution over a finite outcome space is the obvious choice, and MaxEnt recovers it. But when we have partial information, the situation is subtler. A distribution with high entropy is not simply "vague" in a naive sense; it is precisely the distribution that encodes exactly the constraints we have specified, and nothing more. A lower-entropy distribution consistent with the same constraints would be implicitly asserting additional structure — additional information — that we do not actually possess. MaxEnt, properly understood, is a principle of epistemic hygiene.
+      </p>
+
+      <h2>2. Foundations: Shannon, Boltzmann, and Jaynes</h2>
+
+      <p>
+        The entropy of a discrete probability distribution p = (p<sub>1</sub>, p<sub>2</sub>, …, p<sub>n</sub>) is defined as:
+      </p>
+
+      <div class="math-block">H(p) = −∑ᵢ pᵢ log pᵢ</div>
+
+      <p>
+        This formula, introduced by Claude Shannon in 1948, measures the average uncertainty or surprise associated with a random variable.<sup>1</sup> Shannon derived it axiomatically: he showed that any measure of uncertainty satisfying three natural conditions — continuity in the probabilities, invariance under permutation of outcomes, and a consistency condition for hierarchical experiments — must take this form up to a multiplicative constant. The result was not an arbitrary choice; it was the unique sensible measure of uncertainty over a probability distribution.
+      </p>
+
+      <p>
+        The formal resemblance to Boltzmann's entropy in statistical mechanics is not coincidental. Boltzmann, working in the 1870s, had defined the thermodynamic entropy of a macrostate as proportional to the logarithm of the number of microstates consistent with it. In the framework later systematized by Gibbs, this becomes the ensemble entropy S = −k<sub>B</sub> ∑ᵢ pᵢ log pᵢ, where k<sub>B</sub> is Boltzmann's constant and the sum is over microstates. Shannon was aware of this connection; the story of John von Neumann advising him to call his measure "entropy" — since nobody knows what entropy really is, so it would give him the advantage in any debate — may be apocryphal, but it captures something true about the historical situation.<sup>2</sup>
+      </p>
+
+      <p>
+        The conceptual synthesis came in two papers by Edwin T. Jaynes published in 1957.<sup>3</sup> Jaynes, a physicist at Washington University in St. Louis, proposed that statistical mechanics could be understood not as a physical theory about the behavior of many-particle systems, but as a special case of a general theory of inference. The Gibbs ensemble, Jaynes argued, was not a mysterious average over some objective physical ensemble of identical systems; it was the probability distribution that a rational agent should assign, given only the constraints that thermodynamics actually provides — namely, the values of macroscopic quantities like energy, volume, and particle number.
+      </p>
+
+      <p>
+        The MaxEnt principle, in Jaynes's formulation, is the answer to the question: given a set of constraints of the form ∑ᵢ pᵢ fₖ(xᵢ) = ⟨fₖ⟩ for functions fₖ and measured expectation values ⟨fₖ⟩, what distribution p should we assign? The answer, obtained by Lagrange multiplier optimization, is the exponential family:
+      </p>
+
+      <div class="math-block">pᵢ = (1/Z) exp(−∑ₖ λₖ fₖ(xᵢ))</div>
+
+      <p>
+        where the λₖ are Lagrange multipliers chosen to satisfy the constraints, and Z = ∑ᵢ exp(−∑ₖ λₖ fₖ(xᵢ)) is the partition function. This is not merely a formal curiosity: the Boltzmann distribution, the Gaussian, the exponential distribution, and several other canonical distributions in probability theory all emerge as special cases of this construction, each corresponding to different constraints. MaxEnt is, in this sense, a unifying framework for a large swath of probability theory.
+      </p>
+
+      <p>
+        Jaynes's insight was that this derivation gives statistical mechanics a new foundation. We do not need to invoke ergodicity, or time averages, or mysterious ensembles of systems. We need only the constraints that macroscopic measurements impose, and the principle of not adding information we do not have. Thermodynamics falls out of epistemology. It is a striking claim — contested by some, but extraordinarily fertile.
+      </p>
+
+      <h2>3. The Logic of MaxEnt: Consistency Axioms</h2>
+
+      <p>
+        One might worry that MaxEnt is simply a useful heuristic, a rule of thumb that happens to work well in certain domains but lacks deeper justification. This concern was substantially addressed by John Shore and Rodney Johnson in a 1980 paper that remains underappreciated outside the technical literature.<sup>4</sup> Shore and Johnson proved that MaxEnt is not merely one reasonable approach among many; it is the unique method of updating probability assignments that satisfies a set of consistency requirements that any rational inference procedure should satisfy.
+      </p>
+
+      <p>
+        Their axioms can be stated informally as follows. First, uniqueness: the method should produce a single, definite probability distribution given the constraints. Second, invariance: the result should not depend on which coordinate system is used to describe the problem, or on how the constraints are parameterized. Third, system independence: if the problem can be decomposed into independent subsystems, updating on each subsystem independently should give the same result as treating the whole system jointly. Fourth, subset independence: if a constraint restricts only part of the sample space, the probabilities over the remainder should be updated in a specific consistent way.
+      </p>
+
+      <p>
+        Shore and Johnson showed that any method satisfying these four conditions must select the distribution that maximizes entropy relative to a prior distribution — a result they called the minimum cross-entropy principle (or relative entropy minimization), which reduces to plain MaxEnt when the prior is uniform. The result is a uniqueness theorem: there is, up to the choice of prior, exactly one consistent way to do inference under constraints, and it is MaxEnt.
+      </p>
+
+      <p>
+        This is a result of considerable philosophical significance. It means that MaxEnt is not arbitrary, not one preference among many, but the uniquely rational response to partial information, given that one wants to reason consistently. The principle does not tell us anything about the world; it tells us how an ideally consistent reasoner must update their probability assignments when new constraints are learned. This is closer to logic than to empirical science — it is a theorem about the structure of rational inference.
+      </p>
+
+      <p>
+        The connection to Bayesian inference is worth noting here. Bayesian updating — multiplying a prior by a likelihood and normalizing — is itself a special case of MaxEnt, corresponding to the constraint that the new distribution must assign zero probability to outcomes ruled out by the data. MaxEnt generalizes Bayesian updating to the case where new information arrives not as hard evidence but as soft constraints on expectation values. In this sense, MaxEnt is the broader framework, and Bayes is one of its special cases.
+      </p>
+
+      <h2>4. Applications Across Domains</h2>
+
+      <h3>Statistical mechanics</h3>
+
+      <p>
+        The most direct application of MaxEnt is the recovery of equilibrium statistical mechanics. Given only the constraint that the average energy of a system is some fixed value ⟨E⟩, maximizing Shannon entropy over the probability distribution over microstates yields the canonical Boltzmann distribution p(ε) ∝ exp(−βε), where β = 1/k<sub>B</sub>T is the inverse temperature. The partition function Z = ∑ exp(−βεᵢ) encodes all thermodynamic properties of the system: the free energy is F = −k<sub>B</sub>T log Z, and all other thermodynamic quantities follow by differentiation.
+      </p>
+
+      <p>
+        Adding the constraint on average particle number yields the grand canonical ensemble; fixing entropy itself as a constraint yields the microcanonical ensemble. The entire zoo of statistical mechanical ensembles emerges systematically from MaxEnt by varying which macroscopic quantities are constrained. This is perhaps the most intellectually satisfying application, because it shows that the equilibrium structures discovered empirically by Boltzmann and Gibbs are not contingent features of physical systems but necessary consequences of rational inference under the constraints that thermodynamics imposes.
+      </p>
+
+      <h3>Image reconstruction and signal processing</h3>
+
+      <p>
+        In the 1970s and 1980s, MaxEnt found important applications in image reconstruction, particularly in astronomy and medical imaging. The problem of reconstructing an image from incomplete or noisy measurements is severely underdetermined: many images are consistent with any given set of measurements. MaxEnt provides a principled criterion for selecting among them — choose the image with the highest entropy, subject to consistency with the data. The resulting reconstructions tend to be smooth where the data are silent and sharp where the data demand it, without introducing spurious features not supported by measurement.<sup>5</sup>
+      </p>
+
+      <p>
+        This application illustrates a key virtue of MaxEnt: it does not hallucinate. A maximum entropy reconstruction neither invents structure nor suppresses real structure; it represents exactly what the data constrain, and nothing more. For scientific imaging, where the introduction of artifacts can lead to false discoveries, this is not merely aesthetically appealing but epistemically essential.
+      </p>
+
+      <h3>Natural language processing and the precursors to modern language models</h3>
+
+      <p>
+        One of the more unexpected applications of MaxEnt came in computational linguistics. In the 1990s, researchers at IBM — particularly Berger, Della Pietra, and Della Pietra — developed maximum entropy models for natural language processing tasks such as part-of-speech tagging, parsing, and language modeling.<sup>6</sup> The key insight was that a statistical model of language could be formulated as a MaxEnt problem: given a set of feature functions (capturing properties like "the word 'the' tends to precede nouns") and their observed frequencies in training data, find the distribution over word sequences with maximum entropy consistent with those feature expectations.
+      </p>
+
+      <p>
+        The resulting models — sometimes called logistic regression models in their discriminative form — were surprisingly powerful for their time, and the MaxEnt framework gave them a clear probabilistic interpretation. They are, in retrospect, direct ancestors of the neural language models that now dominate the field. The softmax function in modern transformers is structurally identical to the MaxEnt exponential family distribution; the attention mechanism can be understood as learning which feature constraints are relevant for prediction. MaxEnt language models thus represent a conceptual bridge between the classical inference tradition and contemporary large language models — a bridge that the rapid scaling of neural networks has somewhat obscured but not eliminated.
+      </p>
+
+      <h3>Ecology: species abundance distributions</h3>
+
+      <p>
+        In ecology, one of the most persistent empirical regularities is the species abundance distribution (SAD) — the pattern of how many species have how many individuals in a given community. These distributions, observed across taxa, ecosystems, and scales, tend to follow consistent functional forms: many rare species, few common ones, with a characteristic log-normal or log-series shape. Explaining this pattern from first principles has occupied ecologists for decades.
+      </p>
+
+      <p>
+        A MaxEnt approach, developed principally by John Harte and colleagues, provides a compelling derivation.<sup>7</sup> By maximizing entropy subject to constraints on total abundance and total metabolic energy, Harte's "Maximum Entropy Theory of Ecology" (METE) recovers not only the SAD but also species-area relationships and other macroecological patterns from a small number of state variables. The success of METE suggests that ecological patterns at the macroscale are, in large part, consequences of the constraints themselves — not of the detailed biology of individual species. This is a striking claim: ecology at the macroscale may be more like thermodynamics than like population dynamics.
+      </p>
+
+      <h3>Economics: income distribution</h3>
+
+      <p>
+        Jaynes himself noted the potential applicability of MaxEnt to economics, and subsequent work has developed this connection in detail.<sup>8</sup> Income distributions — the distribution of income across individuals in an economy — tend to follow characteristic functional forms across countries and time periods: a roughly log-normal body with a power-law (Pareto) tail. These regularities, observed empirically by Pareto in the 1890s and repeatedly confirmed since, call for a theoretical explanation.
+      </p>
+
+      <p>
+        A MaxEnt approach treats income as a random variable subject to constraints on mean income (or mean log income, or other moments). Depending on which constraints are imposed, MaxEnt delivers the exponential, log-normal, or gamma distribution — each of which fits observed income distributions reasonably well in different regimes. The Pareto tail can be recovered by imposing constraints on the average of the logarithm of income above a threshold. What makes the MaxEnt approach illuminating here is not just that it fits the data but that it explains why such robust distributional patterns arise across very different economic institutions: the constraints on aggregate quantities may be more binding than the institutional details, just as thermodynamic constraints dominate microscopic dynamics in statistical mechanics.
+      </p>
+
+      <h2>5. A Deeper Reading: MaxEnt as Epistemology</h2>
+
+      <p>
+        The applications surveyed above might suggest that MaxEnt is primarily a technical tool — a convenient method for deriving distributions in underdetermined problems. I want to argue for a stronger reading: MaxEnt is best understood as a foundational principle of epistemology, a statement about the correct relationship between knowledge and probability.
+      </p>
+
+      <p>
+        The core claim is this. Probability, on the MaxEnt view, represents a state of knowledge, not a feature of an objective world. When we assign a probability distribution to some quantity, we are not describing a frequency in a long-run sequence of trials; we are representing everything we know, and no more. The maximum entropy distribution is the one that faithfully represents our state of knowledge: it encodes our constraints, which are our knowledge, and is maximally noncommittal about everything else, which is our ignorance.
+      </p>
+
+      <p>
+        This is explicitly Bayesian in spirit but importantly distinct from naive Bayesianism in practice. A Bayesian reasoner must specify a prior distribution before updating on data. The MaxEnt framework provides a principled procedure for constructing that prior — namely, the maximum entropy distribution subject to whatever background constraints are available. It thus addresses one of the most persistent criticisms of Bayesian inference, the "problem of the prior": where does the prior come from, and why should it be trusted?
+      </p>
+
+      <p>
+        MaxEnt answers: the prior should be the maximum entropy distribution relative to the background state of knowledge. This is not a solution to all prior-construction problems; as we will see, the reference measure problem introduces its own difficulties. But it provides a systematic, non-arbitrary procedure that is grounded in consistency requirements rather than convenience.
+      </p>
+
+      <p>
+        The epistemological import of MaxEnt is perhaps best appreciated by contrast with what it rules out. Suppose you know only that a random variable X lies in the interval [0, 1]. A maximum entropy distribution over this constraint is the uniform distribution. But suppose I, motivated by aesthetic preference for smooth distributions, instead use a triangular distribution or a distribution concentrated near the midpoint. I have introduced information — a preference, an assumption — that my constraint does not justify. I am, in the language of inference, smuggling unwarranted content into my probability assignment. MaxEnt is a prohibition on this kind of epistemic overreach.
+      </p>
+
+      <p>
+        In this sense, MaxEnt is not primarily a technical principle but a philosophical discipline: a commitment to representing uncertainty honestly, without artificially inflating or deflating our confidence about what we do not know.
+      </p>
+
+      <h2>6. Tensions and Limits</h2>
+
+      <h3>The reference measure problem</h3>
+
+      <p>
+        Shannon entropy, as defined above, is not coordinate-invariant. If X is a continuous random variable with density p(x), the differential entropy H = −∫ p(x) log p(x) dx depends on the parameterization: a change of variables changes the entropy by a term involving the Jacobian of the transformation. This means that "maximum entropy over all densities consistent with constraints" is not well-defined without specifying a reference measure — a background distribution relative to which entropy is computed.
+      </p>
+
+      <p>
+        The proper generalization is the relative entropy (or Kullback-Leibler divergence) from a reference measure q:
+      </p>
+
+      <div class="math-block">D_KL(p ∥ q) = ∫ p(x) log(p(x)/q(x)) dx</div>
+
+      <p>
+        Minimizing relative entropy subject to constraints (equivalently, maximizing the entropy of p relative to q) is coordinate-invariant and well-defined. But this reframes the problem: where does the reference measure q come from? If it must be specified in advance, we are back to the prior-construction problem, now one level deeper. MaxEnt has not eliminated the need for prior information; it has transformed the question of what form that information should take.
+      </p>
+
+      <p>
+        In practice, the choice of reference measure is often guided by symmetry considerations — the Jeffreys prior, invariant under reparameterization, provides a canonical choice in many settings — but no fully general solution exists. This is a genuine limitation of the MaxEnt framework, and it is worth acknowledging clearly. The principle provides structure and discipline, but it cannot conjure epistemic content from nothing.
+      </p>
+
+      <h3>Which constraints to include?</h3>
+
+      <p>
+        A related difficulty concerns the selection of constraints. MaxEnt tells us how to construct a distribution given a set of constraints; it does not tell us which constraints to use. In physical applications, the constraints are given by nature — conservation laws, measured macroscopic quantities — and the framework is unambiguous. But in other domains, the choice of constraints is a modeling decision, and different choices produce dramatically different distributions.
+      </p>
+
+      <p>
+        In ecology, for instance, Harte's METE uses constraints on total abundance and total metabolic energy. One could equally well use constraints on total biomass, or on the variance of abundance, or on phylogenetic structure. The choice is partly empirical — different constraints predict different patterns, and one can test which constraints yield better predictions — but partly theoretical, requiring a judgment about which aggregate quantities are the relevant "macroscopic" variables for the phenomenon of interest. This judgment is non-trivial and cannot be automated by the MaxEnt machinery itself.
+      </p>
+
+      <h3>MaxEnt and overfitting</h3>
+
+      <p>
+        In statistical machine learning, MaxEnt models can overfit. The exponential family form implies that increasing the number of feature constraints increases the expressiveness of the model, but with a finite dataset, adding features can cause the model to memorize idiosyncrasies of the training data rather than capturing genuine structure. This is the standard bias-variance tradeoff, and MaxEnt is not immune to it.
+      </p>
+
+      <p>
+        The regularization techniques commonly used in practice — L1 and L2 penalties on the Lagrange multipliers — have a natural Bayesian interpretation: they correspond to placing Laplace or Gaussian priors on the parameters. But this introduces precisely the question of prior specification that MaxEnt was supposed to provide a principled answer to. The framework is internally consistent, but in practice the resolution of overfitting brings us back to the judgment calls that no formal principle can fully automate.
+      </p>
+
+      <p>
+        There is also a subtler tension. MaxEnt, as an epistemological principle, tells us to be maximally noncommittal about what we do not know. But in predictive modeling, we often want to be somewhat committal — to make sharp predictions rather than hedged ones — and the epistemically "honest" distribution may not be the most useful one for a specific downstream task. The goals of faithful uncertainty representation and useful prediction can come apart, and MaxEnt is primarily a principle for the former.
+      </p>
+
+      <h2>7. Conclusion: The Unifying Character of the Principle</h2>
+
+      <p>
+        I want to close by drawing attention to what seems to me the most striking feature of MaxEnt: its reach. A single inferential principle, derivable from elementary consistency axioms, unifies the equilibrium distributions of statistical mechanics, the canonical distributions of probability theory, image reconstruction methods, the precursors of modern language models, macroecological patterns, and income distributions. That is a remarkable range of applicability for a principle that makes no substantive claims about the world — only about the correct relationship between knowledge and probability.
+      </p>
+
+      <p>
+        Why does MaxEnt appear across so many domains? The answer, I think, is that it is picking out a genuine structural feature: in many complex systems, the macroscopic observables we can measure constrain only a small slice of the microscopic degrees of freedom, and the rest are effectively "random" relative to our state of knowledge. The patterns we observe at the macroscale are therefore dominated by the constraints, not by the microscopic details. MaxEnt makes this structure explicit and exploitable.
+      </p>
+
+      <p>
+        The principle deserves more attention than it typically receives outside of physics. In economics, in ecology, in the social sciences more broadly, there is a persistent temptation to explain observed patterns by constructing elaborate models of individual behavior and interaction. Sometimes this is appropriate. But MaxEnt suggests a useful prior question: could this pattern be the consequence of a small number of macroscopic constraints, independent of the microscopic details? If so, the elaborate model may be introducing explanatory machinery that the pattern does not require — and MaxEnt provides the principled null hypothesis against which to test it.
+      </p>
+
+      <p>
+        This is not an argument for laziness in modeling. The choice of constraints is a substantive theoretical commitment, and getting it wrong produces wrong predictions. But MaxEnt disciplines the modeling process by forcing the question: what do we actually know, and how much of what we observe follows from that knowledge alone? It is, in this sense, a principle of scientific parsimony — not Occam's razor applied to hypotheses, but Occam's razor applied to assumptions about what is known.
+      </p>
+
+      <p>
+        Jaynes believed that MaxEnt would eventually provide a foundation for all of probability and statistics, subsuming Bayesian and frequentist approaches alike into a single coherent framework. That ambition may have been overreached; the reference measure problem and the constraint selection problem do not fully yield to the principle. But the core insight remains: among all ways of representing uncertainty, the maximum entropy distribution is the one that says exactly what we know, and nothing more. That is a standard of epistemic honesty that any inference procedure should aspire to meet.
+      </p>
+
+    </div>
+
+    <div class="footnotes">
+      <div class="footnotes-label">References</div>
+      <ol>
+        <li>Shannon, C. E. (1948). A mathematical theory of communication. <em>Bell System Technical Journal</em>, 27(3), 379–423.</li>
+        <li>Tribus, M., & McIrvine, E. C. (1971). Energy and information. <em>Scientific American</em>, 225(3), 179–188. The von Neumann anecdote appears here, attributed to Shannon's own account.</li>
+        <li>Jaynes, E. T. (1957). Information theory and statistical mechanics. <em>Physical Review</em>, 106(4), 620–630; and Jaynes, E. T. (1957). Information theory and statistical mechanics II. <em>Physical Review</em>, 108(2), 171–190.</li>
+        <li>Shore, J. E., & Johnson, R. W. (1980). Axiomatic derivation of the principle of maximum entropy and the principle of minimum cross-entropy. <em>IEEE Transactions on Information Theory</em>, 26(1), 26–37.</li>
+        <li>Gull, S. F., & Daniell, G. J. (1978). Image reconstruction from incomplete and noisy data. <em>Nature</em>, 272, 686–690. The application to radio astronomy imaging was particularly influential.</li>
+        <li>Berger, A. L., Della Pietra, V. J., & Della Pietra, S. A. (1996). A maximum entropy approach to natural language processing. <em>Computational Linguistics</em>, 22(1), 39–71.</li>
+        <li>Harte, J. (2011). <em>Maximum Entropy and Ecology: A Theory of Abundance, Distribution, and Energetics</em>. Oxford University Press.</li>
+        <li>Jaynes, E. T. (1996). Probability theory: The logic of science (unpublished manuscript, later published 2003 by Cambridge University Press). See also: Dragulescu, A., & Yakovenko, V. M. (2001). Evidence for the exponential distribution of income in the USA. <em>The European Physical Journal B</em>, 20(4), 585–589.</li>
+        <li>Kullback, S., & Leibler, R. A. (1951). On information and sufficiency. <em>Annals of Mathematical Statistics</em>, 22(1), 79–86.</li>
+        <li>Jeffreys, H. (1946). An invariant form for the prior probability in estimation problems. <em>Proceedings of the Royal Society A</em>, 186(1007), 453–461.</li>
+        <li>Cover, T. M., & Thomas, J. A. (2006). <em>Elements of Information Theory</em> (2nd ed.). Wiley-Interscience. The definitive technical reference for the mathematical foundations.</li>
+      </ol>
+    </div>
+
+  </main>
+
+</body>
+
+</html>
