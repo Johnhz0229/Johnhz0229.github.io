@@ -430,7 +430,7 @@
     <h1 class="project-title">Cut Tracker</h1>
 
     <p class="project-subtitle">
-      A multi-user fat-loss tracking web app that accepts plain-English meal descriptions and converts them
+      A multi-user fat-loss tracking web app that accepts meal descriptions in any language and converts them
       into precise macro breakdowns via AI, presenting daily energy balance in a profit-and-loss accounting format.
     </p>
 
@@ -466,25 +466,41 @@
       database, then copy numbers into cells. Two tools, two windows, lots of switching.
     </p>
     <p>
-      The fix was obvious: collapse everything into one step. Describe the meal in plain English, let an AI
-      handle the lookup and calculation, store the result automatically, and surface it as a clean dashboard
-      with a one-click CSV export. That's Cut Tracker.
+      The fix was obvious: collapse everything into one step. Describe the meal in whatever language you think in,
+      let DeepSeek handle the lookup and calculation, store the result automatically, and surface it as a clean
+      dashboard with a one-click CSV export. That's Cut Tracker.
     </p>
 
     <div class="section-label">Usage Examples</div>
     <h2>In Practice</h2>
 
     <h3>Logging a meal</h3>
+    <p style="font-size:0.9rem; color:var(--gray-600); margin-bottom:1rem;">
+      DeepSeek understands any language — log in English, Chinese, Japanese, or whatever comes naturally.
+    </p>
     <div class="example-block">
-      <div class="example-label">You type</div>
+      <div class="example-label">English input</div>
       <div class="example-input">two scrambled eggs cooked in butter, a slice of sourdough toast, and a medium latte with oat milk</div>
-      <div class="example-arrow">↓ AI parses &amp; returns structured JSON ↓</div>
+      <div class="example-arrow">↓ DeepSeek parses &amp; returns structured JSON ↓</div>
       <div class="example-output">
         Eggs (2, scrambled, ~10g butter)  — 220 kcal · P 14g · C 0g · F 17g<br>
         Sourdough toast (1 slice, ~40g)   — 105 kcal · P 4g · C 20g · F 1g<br>
         Oat milk latte (medium, ~350ml)   — 130 kcal · P 4g · C 19g · F 4g<br>
         ─────────────────────────────────────────────────────────<br>
         Total                             — 455 kcal · P 22g · C 39g · F 22g
+      </div>
+    </div>
+    <div class="example-block" style="margin-top:1rem;">
+      <div class="example-label">中文输入</div>
+      <div class="example-input">一碗白米饭，红烧肉三块，炒青菜一份，豆腐汤一碗</div>
+      <div class="example-arrow">↓ DeepSeek 解析并返回结构化 JSON ↓</div>
+      <div class="example-output">
+        白米饭 (1碗, ~200g)   — 260 kcal · P 5g · C 57g · F 1g<br>
+        红烧肉 (3块, ~120g)   — 395 kcal · P 18g · C 8g · F 32g<br>
+        炒青菜 (1份, ~150g)   — 80 kcal · P 3g · C 6g · F 5g<br>
+        豆腐汤 (1碗, ~250ml)  — 65 kcal · P 6g · C 3g · F 3g<br>
+        ─────────────────────────────────────────────────<br>
+        合计                   — 800 kcal · P 32g · C 74g · F 41g
       </div>
     </div>
 
@@ -547,7 +563,7 @@
       <div class="arch-row">
         <div class="arch-box highlight">Food Log Route</div>
         <div class="arch-arrow">→</div>
-        <div class="arch-box neutral">DeepSeek V3 API<br><span style="font-size:9px;color:#888">natural language → macros JSON</span></div>
+        <div class="arch-box neutral">DeepSeek V3 API<br><span style="font-size:9px;color:#888">multilingual input → macros JSON</span></div>
         <div class="arch-arrow">→</div>
         <div class="arch-box">Macro Parser<br><span style="font-size:9px;color:#888">validate · store · calculate</span></div>
       </div>
@@ -559,7 +575,7 @@
 
     <h3>1. Food Logging via AI</h3>
     <p>
-      Users describe meals in free-form text (e.g., "two scrambled eggs and a slice of sourdough toast with butter").
+      Users describe meals in free-form text in any language — English, Chinese, Japanese, or mixed.
       The input is sent to DeepSeek V3, which returns a structured JSON object with per-item breakdowns:
       calories, protein, carbohydrates, and fat — both as consumed and per 100g serving.
       The server validates and stores the result, associating it with the user's session.
