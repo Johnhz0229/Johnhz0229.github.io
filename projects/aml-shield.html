@@ -1,20 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AML Shield — John Huang</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --black: #0a0a0a;
@@ -26,6 +19,18 @@
       --serif: 'DM Serif Display', Georgia, serif;
       --mono: 'DM Mono', monospace;
       --sans: 'Inter', system-ui, sans-serif;
+      --blue-light: #f0f2f8;
+      --blue-mid: #b0b8c8;
+      --blue-dark: #2a3a5e;
+      --red-light: #f8f0f0;
+      --red-mid: #c8b0b0;
+      --red-dark: #5e2a2a;
+      --green-light: #f0f7f0;
+      --green-mid: #b0c8b0;
+      --green-dark: #2a5e2a;
+      --amber-light: #fdf8ee;
+      --amber-mid: #d4b86a;
+      --amber-dark: #8f7a3a;
     }
 
     html { scroll-behavior: smooth; }
@@ -41,15 +46,12 @@
     }
 
     .bg-animation {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      z-index: -3;
+      position: fixed; top: 0; left: 0;
+      width: 100vw; height: 100vh; z-index: -3;
       background: linear-gradient(-45deg, #ffffff, #fbfcfe, #ffffff, #f8f9fb, #ffffff);
       background-size: 400% 400%;
       animation: gradientBG 20s ease infinite;
     }
-
     @keyframes gradientBG {
       0%   { background-position: 0% 50%; }
       50%  { background-position: 100% 50%; }
@@ -57,287 +59,230 @@
     }
 
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
       padding: 1.25rem 3rem;
-      background: rgba(250, 250, 250, 0.92);
+      background: rgba(250,250,250,0.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--gray-200);
     }
+    .nav-logo { font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: 0.05em; text-decoration: none; color: var(--black); }
+    .nav-back { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; color: var(--gray-600); text-decoration: none; border-bottom: 1px solid var(--gray-200); padding-bottom: 2px; transition: color 0.2s, border-color 0.2s; }
+    .nav-back:hover { color: var(--black); border-color: var(--black); }
 
-    .nav-logo {
-      font-family: var(--mono);
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      text-decoration: none;
-      color: var(--black);
-    }
+    .wrap { max-width: 800px; margin: 0 auto; padding: 9rem 3rem 8rem; }
 
-    .nav-back {
-      font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 0.06em;
-      color: var(--gray-600);
-      text-decoration: none;
-      border-bottom: 1px solid var(--gray-200);
-      padding-bottom: 2px;
-      transition: color 0.2s, border-color 0.2s;
-    }
+    /* ── HEADER ── */
+    .project-meta-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+    .meta-tag { font-family: var(--mono); font-size: 10px; color: var(--gray-400); letter-spacing: 0.08em; text-transform: uppercase; background: var(--gray-100); padding: 3px 8px; border-radius: 2px; }
+    .meta-tag.dev { color: var(--amber-dark); background: var(--amber-light); }
 
-    .nav-back:hover {
-      color: var(--black);
-      border-color: var(--black);
-    }
+    .project-title { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3rem); font-weight: 400; line-height: 1.15; margin-bottom: 1rem; }
+    .project-subtitle { font-size: 1.05rem; color: var(--gray-600); line-height: 1.75; font-weight: 300; margin-bottom: 2rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--gray-200); }
 
-    .wrap {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 9rem 3rem 8rem;
-    }
-
-    .project-meta-header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .meta-tag {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--gray-400);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: var(--gray-100);
-      padding: 3px 8px;
-      border-radius: 2px;
-    }
-
-    .meta-tag.dev {
-      color: #8f7a3a;
-      background: #fdf8ee;
-    }
-
-    .project-title {
-      font-family: var(--serif);
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight: 400;
-      line-height: 1.15;
-      margin-bottom: 1rem;
-    }
-
-    .project-subtitle {
-      font-size: 1.05rem;
-      color: var(--gray-600);
-      line-height: 1.75;
-      font-weight: 300;
-      margin-bottom: 2rem;
-      padding-bottom: 2.5rem;
-      border-bottom: 1px solid var(--gray-200);
-    }
-
-    .link-row {
-      display: flex;
-      gap: 1.5rem;
-      margin-bottom: 3rem;
-    }
-
-    .proj-link {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--black);
-      text-decoration: none;
-      border-bottom: 1px solid var(--gray-400);
-      padding-bottom: 2px;
-      transition: opacity 0.2s;
-    }
-
+    .link-row { display: flex; gap: 1.5rem; margin-bottom: 3rem; }
+    .proj-link { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--black); text-decoration: none; border-bottom: 1px solid var(--gray-400); padding-bottom: 2px; transition: opacity 0.2s; }
     .proj-link:hover { opacity: 0.45; }
 
-    .section-label {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gray-400);
-      margin-bottom: 1.25rem;
-      margin-top: 3.5rem;
+    /* ── SECTION HEADERS ── */
+    .section-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 1.25rem; margin-top: 3.5rem; }
+    h2 { font-family: var(--serif); font-size: 1.45rem; font-weight: 400; margin-bottom: 1rem; line-height: 1.3; }
+    h3 { font-family: var(--sans); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-600); margin-top: 2.25rem; margin-bottom: 0.6rem; }
+    p { font-size: 1rem; line-height: 1.85; font-weight: 300; color: #1a1a1a; margin-bottom: 1.25rem; }
+    a { color: var(--blue-dark); text-decoration: none; border-bottom: 1px solid var(--blue-mid); transition: opacity 0.2s; }
+    a:hover { opacity: 0.6; }
+    code { font-family: var(--mono); font-size: 0.82em; background: var(--gray-100); padding: 1px 5px; border-radius: 2px; color: var(--black); }
+
+    /* ── TAG ROW ── */
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.5rem 0; }
+    .tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; padding: 4px 10px; background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: 2px; color: var(--gray-600); }
+
+    /* ── NOTES ── */
+    .note { font-family: var(--mono); font-size: 0.78rem; color: var(--gray-400); line-height: 1.6; border-left: 2px solid var(--gray-200); padding-left: 1rem; margin: 1.5rem 0; }
+    .warning-note { font-family: var(--mono); font-size: 0.78rem; color: var(--red-dark); background: #fdf5f5; border-left: 2px solid var(--red-mid); padding: 0.75rem 1rem; margin: 1.5rem 0; line-height: 1.6; }
+
+    /* ── REGULATION TABLE ── */
+    .reg-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.875rem; }
+    .reg-table th { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-400); text-align: left; padding: 0.5rem 1rem 0.5rem 0; border-bottom: 1px solid var(--gray-200); font-weight: 400; }
+    .reg-table td { padding: 0.75rem 1rem 0.75rem 0; border-bottom: 1px solid var(--gray-200); vertical-align: top; line-height: 1.6; font-weight: 300; color: #1a1a1a; }
+    .reg-table td:first-child { font-family: var(--mono); font-size: 11px; color: var(--blue-dark); white-space: nowrap; padding-right: 1.5rem; }
+    .reg-table tr:last-child td { border-bottom: none; }
+
+    /* ── FLOW STEPS ── */
+    .flow-steps { margin: 1.5rem 0; }
+    .flow-step { display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; margin-bottom: 1.25rem; align-items: start; }
+    .flow-step-num { font-family: var(--mono); font-size: 11px; color: var(--gray-400); padding-top: 3px; }
+    .flow-step-body strong { font-weight: 500; font-size: 0.95rem; display: block; margin-bottom: 0.2rem; }
+    .flow-step-body p { font-size: 0.9rem; color: var(--gray-600); margin-bottom: 0; line-height: 1.65; }
+
+    /* ── SHAP BAR ── */
+    .shap-bar { margin: 1.5rem 0; display: flex; flex-direction: column; gap: 0.65rem; }
+    .shap-row { display: grid; grid-template-columns: 15rem 1fr 3.5rem; align-items: center; gap: 0.75rem; }
+    .shap-label { font-family: var(--mono); font-size: 10px; color: var(--gray-600); text-align: right; }
+    .shap-track { background: var(--gray-200); border-radius: 2px; height: 8px; overflow: hidden; }
+    .shap-fill { height: 100%; border-radius: 2px; }
+    .shap-fill.risk { background: var(--red-mid); }
+    .shap-fill.mitigate { background: var(--green-mid); }
+    .shap-val { font-family: var(--mono); font-size: 10px; color: var(--gray-600); }
+
+    /* ── DECISION GRID ── */
+    .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    .decision-card { border: 1px solid var(--gray-200); border-radius: 4px; padding: 1rem 1.25rem; }
+    .verdict { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+    .verdict.clear { color: var(--green-dark); }
+    .verdict.watch { color: var(--amber-dark); }
+    .verdict.escalate { color: var(--red-dark); }
+    .verdict.sar { color: var(--red-dark); font-weight: 500; }
+    .decision-card p { font-size: 0.82rem; color: var(--gray-600); line-height: 1.55; margin-bottom: 0; }
+
+    /* ══════════════════════════════════════════
+       VISUAL ARTIFACTS
+    ══════════════════════════════════════════ */
+
+    /* ReAct cycle diagram */
+    .react-cycle {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0; margin: 2rem 0; flex-wrap: wrap;
     }
-
-    h2 {
-      font-family: var(--serif);
-      font-size: 1.45rem;
-      font-weight: 400;
-      margin-bottom: 1rem;
-      line-height: 1.3;
-    }
-
-    h3 {
-      font-family: var(--sans);
-      font-size: 0.78rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gray-600);
-      margin-top: 2rem;
-      margin-bottom: 0.6rem;
-    }
-
-    p {
-      font-size: 1rem;
-      line-height: 1.85;
-      font-weight: 300;
-      color: #1a1a1a;
-      margin-bottom: 1.25rem;
-    }
-
-    .arch-diagram {
-      border: 1px solid var(--gray-200);
-      border-radius: 6px;
-      padding: 2rem;
-      margin: 2rem 0;
-      background: var(--gray-100);
-      overflow-x: auto;
-    }
-
-    .arch-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-bottom: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .arch-row:last-child { margin-bottom: 0; }
-
-    .arch-box {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.04em;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
+    .react-node {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 110px; height: 110px; border-radius: 50%;
+      border: 2px solid var(--gray-200);
       background: #fff;
+      text-align: center; padding: 0.75rem;
+      position: relative; z-index: 1;
+    }
+    .react-node .rn-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 3px; }
+    .react-node .rn-title { font-family: var(--serif); font-size: 1rem; line-height: 1.2; }
+    .react-node.think { border-color: var(--blue-mid); background: var(--blue-light); }
+    .react-node.think .rn-title { color: var(--blue-dark); }
+    .react-node.act   { border-color: var(--amber-mid); background: var(--amber-light); }
+    .react-node.act   .rn-title { color: var(--amber-dark); }
+    .react-node.observe { border-color: var(--green-mid); background: var(--green-light); }
+    .react-node.observe .rn-title { color: var(--green-dark); }
+    .react-arrow-curved {
+      font-size: 1.5rem; color: var(--gray-400); line-height: 1;
+      margin: 0 0.25rem; margin-top: -20px;
+    }
+    .react-caption {
+      font-family: var(--mono); font-size: 9px; color: var(--gray-400); letter-spacing: 0.06em;
+      text-align: center; margin-top: 0.5rem; width: 110px; line-height: 1.4;
+    }
+    .react-node-wrap { display: flex; flex-direction: column; align-items: center; }
+    .react-loop-label {
+      font-family: var(--mono); font-size: 9px; color: var(--gray-400);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      border: 1px dashed var(--gray-200); border-radius: 40px;
+      padding: 3px 16px; margin: 0 0.5rem; margin-top: -15px;
+      background: #fff;
+    }
+
+    /* Tool execution timeline */
+    .tool-timeline { margin: 2rem 0; position: relative; }
+    .tool-timeline::before {
+      content: ''; position: absolute; left: 20px; top: 0; bottom: 0;
+      width: 1px; background: var(--gray-200);
+    }
+    .tool-item { display: grid; grid-template-columns: 42px 1fr; gap: 1rem; margin-bottom: 1rem; align-items: start; position: relative; }
+    .tool-dot {
+      width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--gray-200);
+      background: #fff; display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 10px; color: var(--gray-600);
+      flex-shrink: 0; position: relative; z-index: 1;
+    }
+    .tool-dot.blue { border-color: var(--blue-mid); background: var(--blue-light); color: var(--blue-dark); }
+    .tool-dot.amber { border-color: var(--amber-mid); background: var(--amber-light); color: var(--amber-dark); }
+    .tool-dot.red { border-color: var(--red-mid); background: var(--red-light); color: var(--red-dark); }
+    .tool-dot.green { border-color: var(--green-mid); background: var(--green-light); color: var(--green-dark); }
+    .tool-body { padding-top: 6px; }
+    .tool-name { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--black); margin-bottom: 2px; }
+    .tool-desc { font-size: 0.85rem; color: var(--gray-600); line-height: 1.5; }
+    .tool-cond { display: inline-block; font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em; background: var(--amber-light); color: var(--amber-dark); border: 1px solid var(--amber-mid); border-radius: 2px; padding: 1px 6px; margin-top: 4px; }
+
+    /* Branch rules visual */
+    .rule-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1.5rem 0; }
+    .rule-card { border: 1px solid var(--gray-200); border-radius: 4px; padding: 1rem; }
+    .rule-id { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 0.4rem; }
+    .rule-if { font-family: var(--mono); font-size: 10px; color: var(--blue-dark); background: var(--blue-light); padding: 3px 6px; border-radius: 2px; margin-bottom: 0.4rem; display: block; }
+    .rule-then { font-family: var(--mono); font-size: 10px; color: var(--green-dark); background: var(--green-light); padding: 3px 6px; border-radius: 2px; margin-bottom: 0.4rem; display: block; }
+    .rule-why { font-size: 0.8rem; color: var(--gray-600); line-height: 1.5; margin-top: 0.5rem; }
+
+    /* Decision threshold bar */
+    .threshold-bar { margin: 2rem 0; }
+    .threshold-track {
+      display: flex; height: 28px; border-radius: 4px; overflow: hidden;
       border: 1px solid var(--gray-200);
-      color: var(--black);
-      text-align: center;
-      white-space: nowrap;
     }
+    .threshold-seg { display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em; font-weight: 500; }
+    .threshold-seg.clear   { flex: 30; background: var(--green-light); color: var(--green-dark); border-right: 1px solid var(--gray-200); }
+    .threshold-seg.watch   { flex: 30; background: var(--amber-light); color: var(--amber-dark); border-right: 1px solid var(--gray-200); }
+    .threshold-seg.escalate { flex: 20; background: #fff4ef; color: #8f4a2a; border-right: 1px solid var(--gray-200); }
+    .threshold-seg.sar     { flex: 20; background: var(--red-light); color: var(--red-dark); }
+    .threshold-labels { display: flex; margin-top: 0.35rem; }
+    .threshold-label { font-family: var(--mono); font-size: 9px; color: var(--gray-400); }
+    .threshold-label.clear   { flex: 30; }
+    .threshold-label.watch   { flex: 30; }
+    .threshold-label.escalate { flex: 20; }
+    .threshold-label.sar     { flex: 20; text-align: right; }
+    .threshold-legends { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 1rem; }
+    .threshold-legend { font-size: 0.8rem; color: var(--gray-600); line-height: 1.5; }
+    .threshold-legend span { font-family: var(--mono); font-size: 10px; font-weight: 500; }
+    .threshold-legend span.clear   { color: var(--green-dark); }
+    .threshold-legend span.watch   { color: var(--amber-dark); }
+    .threshold-legend span.escalate { color: #8f4a2a; }
+    .threshold-legend span.sar     { color: var(--red-dark); }
 
-    .arch-box.highlight {
-      border-color: #b0b8c8;
-      background: #f0f2f8;
-      color: #2a3a5e;
-    }
-
-    .arch-box.accent {
-      border-color: #c8b0b0;
-      background: #f8f0f0;
-      color: #5e2a2a;
-    }
-
-    .arch-arrow {
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--gray-400);
-    }
-
-    .arch-divider {
-      width: 100%;
-      height: 1px;
-      background: var(--gray-200);
-      margin: 1rem 0;
-    }
-
-    .arch-label {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--gray-400);
-      text-align: center;
-      margin-bottom: 0.75rem;
-    }
-
-    .flow-steps {
-      margin: 1.5rem 0;
-    }
-
-    .flow-step {
-      display: grid;
-      grid-template-columns: 2rem 1fr;
-      gap: 1rem;
-      margin-bottom: 1.25rem;
-      align-items: start;
-    }
-
-    .flow-step-num {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--gray-400);
-      padding-top: 3px;
-    }
-
-    .flow-step-body strong {
-      font-weight: 500;
-      font-size: 0.95rem;
-      display: block;
-      margin-bottom: 0.2rem;
-    }
-
-    .flow-step-body p {
-      font-size: 0.9rem;
-      color: var(--gray-600);
-      margin-bottom: 0;
-      line-height: 1.65;
-    }
-
-    .tag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin: 1.5rem 0;
-    }
-
-    .tag {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.06em;
-      padding: 4px 10px;
-      background: var(--gray-100);
-      border: 1px solid var(--gray-200);
-      border-radius: 2px;
+    /* Feature grid */
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin: 1.5rem 0; }
+    .feature-pill {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.04em;
+      padding: 5px 10px; border-radius: 3px;
+      border: 1px solid var(--gray-200); background: #fff;
       color: var(--gray-600);
     }
+    .feature-pill.amount { border-color: var(--blue-mid); background: var(--blue-light); color: var(--blue-dark); }
+    .feature-pill.time   { border-color: var(--amber-mid); background: var(--amber-light); color: var(--amber-dark); }
+    .feature-pill.geo    { border-color: var(--red-mid); background: var(--red-light); color: var(--red-dark); }
+    .feature-pill.type   { border-color: var(--green-mid); background: var(--green-light); color: var(--green-dark); }
 
-    .note {
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      color: var(--gray-400);
-      line-height: 1.6;
-      border-left: 2px solid var(--gray-200);
-      padding-left: 1rem;
-      margin: 1.5rem 0;
-    }
+    /* Training data distribution */
+    .data-dist { display: flex; align-items: flex-end; gap: 0.75rem; margin: 1.5rem 0; height: 80px; }
+    .data-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+    .data-bar { width: 100%; border-radius: 2px 2px 0 0; }
+    .data-bar-label { font-family: var(--mono); font-size: 9px; color: var(--gray-400); text-align: center; }
+    .data-bar-val { font-family: var(--mono); font-size: 9px; color: var(--gray-600); }
 
-    @media (max-width: 640px) {
+    /* XGBoost params */
+    .params-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1.5rem 0; }
+    .param-card { border: 1px solid var(--gray-200); border-radius: 4px; padding: 0.85rem 1rem; }
+    .param-key { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 3px; }
+    .param-val { font-family: var(--mono); font-size: 1rem; font-weight: 500; color: var(--black); }
+    .param-note { font-size: 0.75rem; color: var(--gray-600); margin-top: 2px; line-height: 1.4; }
+
+    /* System prompt structure */
+    .prompt-structure { border: 1px solid var(--gray-200); border-radius: 6px; overflow: hidden; margin: 1.5rem 0; }
+    .prompt-row { display: grid; grid-template-columns: 2rem 10rem 1fr; gap: 1rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--gray-200); align-items: start; }
+    .prompt-row:last-child { border-bottom: none; }
+    .prompt-num { font-family: var(--mono); font-size: 10px; color: var(--gray-400); padding-top: 1px; }
+    .prompt-section { font-family: var(--mono); font-size: 10px; letter-spacing: 0.04em; color: var(--blue-dark); }
+    .prompt-detail { font-size: 0.85rem; color: var(--gray-600); line-height: 1.55; }
+    .prompt-row:nth-child(odd) { background: var(--gray-100); }
+
+    @media (max-width: 680px) {
       nav { padding: 1rem 1.5rem; }
       .wrap { padding: 7rem 1.5rem 5rem; }
-      .arch-row { flex-direction: column; align-items: flex-start; }
+      .decision-grid, .rule-cards, .params-grid, .feature-grid { grid-template-columns: 1fr; }
+      .react-cycle { gap: 0.5rem; }
+      .shap-row { grid-template-columns: 8rem 1fr 3rem; }
+      .prompt-row { grid-template-columns: 2rem 1fr; }
+      .prompt-section { display: none; }
+      .threshold-legends { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 
 <body>
   <div class="bg-animation"></div>
-
   <nav>
     <a href="../index.html" class="nav-logo">JH</a>
     <a href="../index.html#projects" class="nav-back">← Projects</a>
@@ -346,190 +291,504 @@
   <main class="wrap">
 
     <div class="project-meta-header">
-      <span class="meta-tag">Platform</span>
+      <span class="meta-tag">Compliance Platform</span>
       <span class="meta-tag dev">In Development</span>
     </div>
-
     <h1 class="project-title">AML Shield</h1>
-
     <p class="project-subtitle">
-      An end-to-end anti-money laundering compliance platform integrating real-time transaction screening,
-      entity resolution, and risk-scoring workflows — designed to help financial institutions streamline
-      SAR filing and regulatory reporting through automated case management and audit-ready documentation.
+      An AI-powered anti-money laundering compliance platform built for <a href="https://www.bafin.de/EN/Aufsicht/GeldwaescheFinanzierung/geldwaeschefinanzierung_node.html" target="_blank">BaFin</a>-regulated German financial institutions. A conditional <a href="https://arxiv.org/abs/2210.03629" target="_blank">ReAct agent</a> (Reason + Act) combines Claude with an XGBoost classifier to deliver explainable transaction risk decisions grounded in live regulatory citations — from German GwG to FATF Recommendations to EU 6AMLD — and produces BaFin-format SAR reports with full, immutable audit trails.
     </p>
-
     <div class="link-row">
-      <a href="https://github.com/Johnhz0229" target="_blank" class="proj-link">GitHub ↗</a>
+      <a href="https://github.com/Johnhz0229/aml-shield" target="_blank" class="proj-link">GitHub ↗</a>
     </div>
-
     <div class="tag-row">
       <span class="tag">Python</span>
-      <span class="tag">Compliance</span>
-      <span class="tag">Entity Resolution</span>
-      <span class="tag">Risk Scoring</span>
-      <span class="tag">Graph ML</span>
-      <span class="tag">AML / FinCrime</span>
+      <span class="tag">FastAPI</span>
+      <span class="tag">Claude Haiku</span>
+      <span class="tag">XGBoost</span>
+      <span class="tag">SHAP</span>
+      <span class="tag">NetworkX</span>
+      <span class="tag">Docker</span>
+      <span class="tag">BaFin / GwG</span>
+      <span class="tag">FATF</span>
+      <span class="tag">6AMLD</span>
     </div>
 
-    <!-- ARCHITECTURE -->
-    <div class="section-label">Architecture</div>
-    <h2>System Overview</h2>
+    <!-- ══ REACT AGENT ══════════════════════════════════════════ -->
+    <div class="section-label">The ReAct Agent</div>
+    <h2>Reason, Act, Observe — in a Loop</h2>
     <p>
-      AML Shield is structured as a pipeline of four cooperating layers: ingestion, screening,
-      risk scoring, and case management. Each layer is independently operable, allowing financial
-      institutions to integrate only the components relevant to their existing compliance stack.
+      <a href="https://arxiv.org/abs/2210.03629" target="_blank">ReAct</a> (Reasoning + Acting) is a prompting paradigm where a language model alternates between <em>thinking</em> about what to do and <em>calling tools</em> to do it. Each tool result feeds back into the model's context, allowing it to update its reasoning before deciding the next action. AML Shield's agent loop runs up to 10 iterations before forcing a final decision.
     </p>
 
-    <div class="arch-diagram">
-      <div class="arch-label">Ingestion Layer</div>
-      <div class="arch-row">
-        <div class="arch-box">Transaction Feed<br><span style="font-size:9px;color:#888">real-time / batch</span></div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box">Entity Feed<br><span style="font-size:9px;color:#888">accounts · counterparties</span></div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box highlight">Normalisation &amp; Enrichment</div>
+    <!-- ReAct cycle visual -->
+    <div class="react-cycle">
+      <div class="react-node-wrap">
+        <div class="react-node think">
+          <div class="rn-label">Step 1</div>
+          <div class="rn-title">Think</div>
+        </div>
+        <div class="react-caption">Analyze transaction,<br>pick next tool</div>
       </div>
-      <div class="arch-divider"></div>
-      <div class="arch-label">Screening Layer</div>
-      <div class="arch-row">
-        <div class="arch-box highlight">Sanctions Screening<br><span style="font-size:9px;color:#888">OFAC · UN · EU lists</span></div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box highlight">Entity Resolution<br><span style="font-size:9px;color:#888">fuzzy match · deduplication</span></div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box highlight">Network Graph<br><span style="font-size:9px;color:#888">account clusters · counterparty links</span></div>
+      <div style="display:flex;flex-direction:column;align-items:center;margin-top:-30px;">
+        <div class="react-arrow-curved">→</div>
       </div>
-      <div class="arch-divider"></div>
-      <div class="arch-label">Risk &amp; Detection Layer</div>
-      <div class="arch-row">
-        <div class="arch-box accent">Rule Engine<br><span style="font-size:9px;color:#888">typology rules</span></div>
-        <div class="arch-arrow">+</div>
-        <div class="arch-box accent">ML Anomaly Detector<br><span style="font-size:9px;color:#888">supervised · graph features</span></div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box accent">Risk Score<br><span style="font-size:9px;color:#888">0–100 · SHAP explanation</span></div>
+      <div class="react-node-wrap">
+        <div class="react-node act">
+          <div class="rn-label">Step 2</div>
+          <div class="rn-title">Act</div>
+        </div>
+        <div class="react-caption">Call tool with<br>precise inputs</div>
       </div>
-      <div class="arch-divider"></div>
-      <div class="arch-label">Case Management Layer</div>
-      <div class="arch-row">
-        <div class="arch-box">Alert Queue</div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box highlight">Investigator Dashboard</div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box">SAR Drafting &amp; Audit Trail</div>
+      <div style="display:flex;flex-direction:column;align-items:center;margin-top:-30px;">
+        <div class="react-arrow-curved">→</div>
       </div>
-    </div>
-
-    <!-- LOGIC -->
-    <div class="section-label">Core Logic</div>
-    <h2>How It Works</h2>
-
-    <h3>1. Ingestion & Normalisation</h3>
-    <p>
-      Transactions and entity records are ingested from upstream systems via batch file or streaming feed.
-      Each record is normalised to a canonical schema — standardising currencies, date formats, name
-      representations, and account identifiers — before being passed downstream. Enrichment at this stage
-      appends jurisdiction, account age, and historical volume statistics.
-    </p>
-
-    <h3>2. Sanctions Screening</h3>
-    <p>
-      All parties to a transaction are screened against consolidated watchlists (OFAC SDN, UN Consolidated,
-      EU Financial Sanctions). Matching uses a combination of exact lookup and fuzzy string matching to
-      surface near-matches caused by transliteration variations or deliberate obfuscation.
-    </p>
-
-    <h3>3. Entity Resolution</h3>
-    <p>
-      A recurring challenge in AML is that the same real-world entity appears under multiple names,
-      account numbers, or spellings across systems. AML Shield's entity resolution layer clusters
-      account records using probabilistic matching across name, address, date-of-birth, and
-      transaction-behaviour features — consolidating fragmented profiles before risk scoring.
-    </p>
-
-    <h3>4. Network Graph Construction</h3>
-    <p>
-      Resolved entities and their transactions are modelled as a directed graph, where nodes are accounts
-      and edges are fund flows. Graph-level features — degree centrality, clustering coefficient,
-      hub-and-spoke patterns, rapid fan-out — are extracted as inputs to the ML model and as
-      standalone typology signals.
-    </p>
-
-    <div class="arch-diagram">
-      <div class="arch-label">Graph Signal Examples</div>
-      <div class="arch-row">
-        <div class="arch-box accent">Hub-and-Spoke<br><span style="font-size:9px;color:#888">one account fans funds to many</span></div>
-        <div class="arch-box accent">Rapid Layering<br><span style="font-size:9px;color:#888">funds move through ≥3 hops quickly</span></div>
-        <div class="arch-box accent">Round-Trip<br><span style="font-size:9px;color:#888">funds return to originating account</span></div>
+      <div class="react-node-wrap">
+        <div class="react-node observe">
+          <div class="rn-label">Step 3</div>
+          <div class="rn-title">Observe</div>
+        </div>
+        <div class="react-caption">Read result,<br>update assessment</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;margin-top:-30px;">
+        <div class="react-arrow-curved" style="color:#ccc;">↩</div>
+        <div class="react-loop-label">repeat up to 10×</div>
       </div>
     </div>
 
-    <h3>5. Risk Scoring Pipeline</h3>
     <p>
-      Each transaction alert is scored on a 0–100 risk scale by combining two signals:
+      Concretely: Claude receives a formatted transaction table, reasons about which of the five registered tools to call, executes it via the <a href="https://docs.anthropic.com/en/docs/build-with-claude/tool-use" target="_blank">Anthropic tool-use API</a>, reads the result, updates its internal risk model, and decides whether to call another tool or produce a final decision. The entire chain — every thought, every tool call, every result — is stored in <code>reasoning_chain</code> and written to an immutable audit trail.
     </p>
-    <div class="flow-steps">
-      <div class="flow-step">
-        <div class="flow-step-num">A</div>
-        <div class="flow-step-body">
-          <strong>Rule Engine</strong>
-          <p>A set of configurable typology rules encode known money-laundering patterns — structuring
-          (transactions just below reporting thresholds), high-velocity cash cycling, transactions to
-          high-risk jurisdictions. Rules fire as binary flags, each contributing a weighted additive score.</p>
+
+    <h3>The Five Tools</h3>
+    <p>Claude has exactly five tools available. The system prompt mandates a default calling order but allows deviations through conditional branching rules.</p>
+
+    <div class="tool-timeline">
+      <div class="tool-item">
+        <div class="tool-dot blue">①</div>
+        <div class="tool-body">
+          <div class="tool-name">transaction_risk_scorer</div>
+          <div class="tool-desc">Runs the XGBoost model on the transaction. Returns a <code>risk_score</code> 0–100, a confidence interval, and SHAP feature attributions. <strong>Always called first.</strong> The score determines which subsequent tools are invoked and at what depth.</div>
         </div>
       </div>
-      <div class="flow-step">
-        <div class="flow-step-num">B</div>
-        <div class="flow-step-body">
-          <strong>ML Anomaly Detector</strong>
-          <p>A supervised model trained on labelled SAR data combines transaction-level features
-          (amount, time-of-day, counterparty risk, currency) with graph-level features extracted
-          from the network layer. SHAP values are computed for every prediction to produce a
-          human-readable explanation of the score.</p>
+      <div class="tool-item">
+        <div class="tool-dot amber">②</div>
+        <div class="tool-body">
+          <div class="tool-name">entity_network_analyzer</div>
+          <div class="tool-desc">Uses NetworkX to traverse the transaction graph around the sender/receiver accounts. Detects structuring (smurfing), layering, fan-out, fan-in, and cycle patterns. Default depth is 2 hops; escalates to depth 3 when score &gt; 80. If flagged connections are returned, the agent calls this tool again recursively on the flagged account.</div>
+          <div class="tool-cond">Rule A: skipped if score &lt; 30 and domestic</div>
+          <div class="tool-cond" style="margin-left:4px;">Rule B: depth=3 if score &gt; 80</div>
+          <div class="tool-cond" style="margin-left:4px;">Rule C: recursive if flagged_connections non-empty</div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-dot amber">③</div>
+        <div class="tool-body">
+          <div class="tool-name">regulatory_rule_checker</div>
+          <div class="tool-desc">Checks the transaction against all applicable regulatory obligations: GwG, FATF 40 Recommendations, EU 6AMLD, Wire Transfer Regulation 2015/847, and EU MiCA (for crypto). Returns triggered rules with severity levels and <em>exact</em> statutory citations, e.g. "GwG §43 Abs. 1 triggered — amount ≥ €10,000 cash deposit".</div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-dot red">④</div>
+        <div class="tool-body">
+          <div class="tool-name">sar_report_generator</div>
+          <div class="tool-desc">Generates a Suspicious Activity Report in BaFin/GwG format for submission via the <a href="https://www.bafin.de/EN/Aufsicht/GeldwaescheFinanzierung/Verdachtsanzeigen/verdachtsanzeigen_node.html" target="_blank">goAML portal</a>. Only invoked when <code>risk_score ≥ 80</code> or a sanctions match is confirmed. Auto-populates the narrative template with all prior findings and appends a tipping-off warning per GwG §47 Abs. 5.</div>
+          <div class="tool-cond">Rule E: immediate if sanctions match detected</div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-dot green">⑤</div>
+        <div class="tool-body">
+          <div class="tool-name">case_escalation_decider</div>
+          <div class="tool-desc">The final arbiter. Accepts the risk score, network risk tier, count of triggered rules, and Claude's reasoning summary. Returns one of four decisions, a case priority, an SLA in hours, and the assigned compliance queue. <strong>Always called last.</strong></div>
         </div>
       </div>
     </div>
+
+    <h3>Conditional Branching Rules</h3>
+    <p>The system prompt hardcodes five rules that override the default tool sequence. They encode the same judgment calls a senior compliance officer would make intuitively.</p>
+
+    <div class="rule-cards">
+      <div class="rule-card">
+        <div class="rule-id">Rule A — Low Risk Shortcut</div>
+        <code class="rule-if">IF score &lt; 30 AND domestic</code>
+        <code class="rule-then">THEN skip network analysis</code>
+        <p class="rule-why">Domestic low-risk transactions don't warrant graph traversal. Cuts latency for the majority of legitimate payments.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-id">Rule B — Deep Network Analysis</div>
+        <code class="rule-if">IF score &gt; 80</code>
+        <code class="rule-then">THEN network depth = 3</code>
+        <p class="rule-why">High-risk transactions require deeper traversal to surface layering across three degrees of separation.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-id">Rule C — Recursive Investigation</div>
+        <code class="rule-if">IF flagged_connections not empty</code>
+        <code class="rule-then">THEN re-run network on flagged account</code>
+        <p class="rule-why">One hop is not sufficient — flagged accounts must be investigated to their source.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-id">Rule D — Grey Zone Analysis</div>
+        <code class="rule-if">IF 40 ≤ score ≤ 60</code>
+        <code class="rule-then">THEN document FOR / AGAINST before deciding</code>
+        <p class="rule-why">Ambiguous cases require documented balanced analysis for the audit trail — a formal pro/con before any escalation decision.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-id">Rule E — Sanctions Fast-Track</div>
+        <code class="rule-if">IF sanctions match detected</code>
+        <code class="rule-then">THEN SAR immediately, skip remaining tools</code>
+        <p class="rule-why">Sanctions matches are per-se SAR events under EU 6AMLD Art. 18 — no further analysis is needed or permitted.</p>
+      </div>
+      <div class="rule-card" style="border-color:var(--red-mid);background:var(--red-light);">
+        <div class="rule-id" style="color:var(--red-dark);">Conservative Default</div>
+        <code class="rule-if" style="color:var(--red-dark);background:#fff;">IF uncertain between tiers</code>
+        <code class="rule-then" style="color:var(--red-dark);background:#fff;">THEN escalate higher</code>
+        <p class="rule-why">Under GwG §17, under-reporting carries criminal liability. The system prompt explicitly instructs Claude to default upward when in doubt.</p>
+      </div>
+    </div>
+
+    <h3>System Prompt Architecture</h3>
+    <p>The system prompt is divided into eight numbered sections, each addressing a different aspect of the agent's behaviour. It is treated as a legal instrument — the comment at the top of the file reads: <em>DO NOT modify regulatory citations in this file.</em></p>
+
+    <div class="prompt-structure">
+      <div class="prompt-row">
+        <div class="prompt-num">§1</div>
+        <div class="prompt-section">Role Definition</div>
+        <div class="prompt-detail">Positions the agent as a licensed compliance officer. Sets accountability framing: "Every decision you make carries legal weight."</div>
+      </div>
+      <div class="prompt-row">
+        <div class="prompt-num">§2</div>
+        <div class="prompt-section">Regulatory Framework</div>
+        <div class="prompt-detail">Exhaustive citation list: GwG §10, §17, §43, §47; FATF Rec. 16/19/20/29; EU 6AMLD; Wire Transfer Reg. 2015/847; MiCA 2023/1114.</div>
+      </div>
+      <div class="prompt-row">
+        <div class="prompt-num">§3</div>
+        <div class="prompt-section">ReAct Protocol</div>
+        <div class="prompt-detail">Defines the Think → Act → Observe loop. Requires Claude to explicitly state what it learned from each tool result before deciding the next action.</div>
+      </div>
+      <div class="prompt-row">
+        <div class="prompt-num">§4</div>
+        <div class="prompt-section">Tool Calling Order</div>
+        <div class="prompt-detail">Default sequence: scorer → network → rules → SAR → decider. Explicitly marked as overridable by the conditional rules in §5.</div>
+      </div>
+      <div class="prompt-row">
+        <div class="prompt-num">§5</div>
+        <div class="prompt-section">Conditional Branching</div>
+        <div class="prompt-detail">Rules A through E. Prefixed with "CRITICAL — You MUST follow these rules" to ensure reliable adherence.</div>
+      </div>
+      <div class="prompt-row">
+        <div class="prompt-num">§6</div>
+        <div class="prompt-section">Decision Thresholds</div>
+        <div class="prompt-detail">Score-to-decision mapping table: 0–29 CLEAR, 30–59 WATCHLIST, 60–79 ESCALATE, 80–100 SAR_REQUIRED, with SLA hours for each tier.</div>
+      </div>
+      <div class="prompt-row">
+        <div class="prompt-num">§7</div>
+        <div class="prompt-section">Output Format</div>
+        <div class="prompt-detail">Mandates a structured output block (DECISION, Risk Score, Key Findings, Regulatory Basis, Reasoning) for downstream parsing and audit logging.</div>
+      </div>
+      <div class="prompt-row">
+        <div class="prompt-num">§8</div>
+        <div class="prompt-section">Behavioural Rules</div>
+        <div class="prompt-detail">Hard prohibitions: never fabricate tool results, always cite specific articles, never alert the customer (GwG §47 Abs. 5), default to SAR when uncertain.</div>
+      </div>
+    </div>
+
+    <h3>Case Escalation: Four Outcomes</h3>
+    <div class="threshold-bar">
+      <div class="threshold-track">
+        <div class="threshold-seg clear">0–29<br>CLEAR</div>
+        <div class="threshold-seg watch">30–59<br>WATCHLIST</div>
+        <div class="threshold-seg escalate">60–79<br>ESCALATE</div>
+        <div class="threshold-seg sar">80–100<br>SAR</div>
+      </div>
+      <div class="threshold-labels">
+        <div class="threshold-label clear">0</div>
+        <div class="threshold-label watch">30</div>
+        <div class="threshold-label escalate">60</div>
+        <div class="threshold-label sar">100</div>
+      </div>
+    </div>
+    <div class="decision-grid">
+      <div class="decision-card">
+        <div class="verdict clear">CLEAR — score 0–29</div>
+        <p>Consistent with customer risk profile. No action required under GwG. Transaction archived.</p>
+      </div>
+      <div class="decision-card">
+        <div class="verdict watch">WATCHLIST — score 30–59</div>
+        <p>Elevated indicators below SAR threshold. Account flagged for 90-day monitoring window.</p>
+      </div>
+      <div class="decision-card">
+        <div class="verdict escalate">ESCALATE_TO_HUMAN — score 60–79</div>
+        <p>Full evidence pack surfaces for senior compliance officer review within 48h SLA.</p>
+      </div>
+      <div class="decision-card">
+        <div class="verdict sar">SAR_REQUIRED — score 80–100</div>
+        <p>Statutory filing obligation triggered under GwG §43 Abs. 1. SAR filed with BaFin FIU within 24h.</p>
+      </div>
+    </div>
+
+    <!-- ══ REGULATORY FRAMEWORK ═══════════════════════════════════ -->
+    <div class="section-label">Regulatory Framework</div>
+    <h2>Legal Grounding</h2>
     <p>
-      The two signals are blended via a configurable weighted average, allowing compliance teams
-      to tune the relative contribution of rule-based and statistical detection depending on
-      their regulatory environment and false-positive tolerance.
+      Every decision AML Shield produces is anchored to a specific statutory obligation. The platform embeds regulatory citations directly into the agent's reasoning chain rather than treating compliance as a post-hoc annotation. The primary framework is German law (<a href="https://www.gesetze-im-internet.de/gwg_2017/" target="_blank">GwG</a>), supplemented by <a href="https://www.fatf-gafi.org/en/topics/fatf-recommendations.html" target="_blank">FATF</a> standards and EU directives where they impose a higher obligation.
+    </p>
+    <table class="reg-table">
+      <thead>
+        <tr><th>Instrument</th><th>Provision</th><th>How it is applied in AML Shield</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>GwG §10 Abs. 3</td>
+          <td>Customer due diligence for transactions ≥ €10,000</td>
+          <td>Triggers <code>is_above_ctr</code> feature in the ML model; regulatory checker raises a MEDIUM-severity flag</td>
+        </tr>
+        <tr>
+          <td>GwG §43 Abs. 1</td>
+          <td>Obligation to report suspicious transactions to the BaFin FIU</td>
+          <td>The primary trigger for SAR_REQUIRED decisions; report is submitted via the goAML portal</td>
+        </tr>
+        <tr>
+          <td>GwG §47 Abs. 5</td>
+          <td>Tipping-off prohibition — informing a customer of a SAR is a criminal offence</td>
+          <td>Explicit warning printed on every SAR output; UI prevents any customer-facing message referencing the case</td>
+        </tr>
+        <tr>
+          <td>GwG §17</td>
+          <td>Criminal liability for under-reporting (Strafbarkeit)</td>
+          <td>Justifies the conservative default bias in the system prompt: "when uncertain between tiers, escalate higher"</td>
+        </tr>
+        <tr>
+          <td>FATF Rec. 16</td>
+          <td>Wire transfer transparency — originator and beneficiary info must accompany cross-border payments</td>
+          <td>Missing/incomplete IBAN or counterparty data raises the risk score and triggers a regulatory flag</td>
+        </tr>
+        <tr>
+          <td>FATF Rec. 19</td>
+          <td>Enhanced due diligence for transactions involving blacklisted jurisdictions</td>
+          <td><code>is_high_risk_country</code> feature; Rule E: sanctions fast-track overrides all other processing</td>
+        </tr>
+        <tr>
+          <td>FATF Rec. 20</td>
+          <td>Suspicious transactions must be reported regardless of amount</td>
+          <td>Overrides the €10,000 threshold — suspicious patterns below CTR are still escalated</td>
+        </tr>
+        <tr>
+          <td>EU 6AMLD Art. 18</td>
+          <td>Expanded predicate offences and enhanced corporate liability</td>
+          <td>SAR narrative includes 6AMLD transposition language when predicate offence indicators are present</td>
+        </tr>
+        <tr>
+          <td>EU Reg. 2015/847</td>
+          <td>Wire Transfer Regulation — information accompanying transfers of funds</td>
+          <td>Cross-border payment scrutiny layer; flags transfers lacking compliant originator records</td>
+        </tr>
+        <tr>
+          <td>EU MiCA 2023/1114</td>
+          <td>Crypto-asset service provider obligations</td>
+          <td>Applied by the regulatory checker when <code>transaction_type = crypto_exchange</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ══ DETECTION TYPOLOGIES ═══════════════════════════════════ -->
+    <div class="section-label">Detection Typologies</div>
+    <h2>Money Laundering Patterns</h2>
+    <p>The rule engine and ML features jointly encode four primary typologies. Each maps to one or more statutory obligations.</p>
+
+    <h3>Structuring (Smurfing)</h3>
+    <p>Transactions in the <strong>€8,500–€9,999</strong> band are flagged by the <code>is_near_ctr_threshold</code> feature — deliberate positioning just below the €10,000 Cash Transaction Reporting threshold to avoid GwG §10 Abs. 3 scrutiny. This is the second-highest SHAP contributor in the reference case (0.614).</p>
+
+    <h3>High-Risk Jurisdiction Exposure</h3>
+    <p>Country codes are extracted from BIC/IBAN and matched against two lists derived from <a href="https://ec.europa.eu/finance/docs/level-2-measures/amlctf-high-risk-countries-2016-1675-annex_en.pdf" target="_blank">EU Delegated Regulation 2016/1675</a>:</p>
+    <div class="rule-cards" style="margin-top:0.75rem;">
+      <div class="rule-card" style="border-color:var(--red-mid);">
+        <div class="rule-id" style="color:var(--red-dark);">FATF Blacklist (is_high_risk_country)</div>
+        <p class="rule-why" style="margin-top:0.5rem;font-family:var(--mono);font-size:10px;color:var(--red-dark);">IR · KP · MM · SY · YE · AF</p>
+        <p class="rule-why">Iran, North Korea, Myanmar, Syria, Yemen, Afghanistan. Triggers Rule E sanctions fast-track. Highest SHAP weight: 0.821.</p>
+      </div>
+      <div class="rule-card" style="border-color:var(--amber-mid);">
+        <div class="rule-id" style="color:var(--amber-dark);">FATF Greylist (is_greylist_country)</div>
+        <p class="rule-why" style="margin-top:0.5rem;font-family:var(--mono);font-size:10px;color:var(--amber-dark);">PK · TR · ML · VN · MZ · TZ · JO</p>
+        <p class="rule-why">Pakistan, Turkey, Mali, Vietnam, Mozambique, Tanzania, Jordan. Elevated risk weight; does not trigger automatic SAR.</p>
+      </div>
+    </div>
+
+    <h3>Temporal Anomalies</h3>
+    <p>The <code>is_night</code> feature flags transactions between <strong>22:00 and 06:00</strong>. Legitimate retail banking activity is strongly concentrated in business hours; early-morning timestamps correlate with automated layering scripts. SHAP weight in reference case: 0.392.</p>
+
+    <h3>Network Graph Typologies</h3>
+    <p>Detected via NetworkX traversal — these patterns are invisible to single-transaction screening.</p>
+    <div class="rule-cards">
+      <div class="rule-card"><div class="rule-id">Hub-and-Spoke</div><p class="rule-why">One account rapidly distributes funds to many receivers — the classic placement layer in a three-stage laundering scheme.</p></div>
+      <div class="rule-card"><div class="rule-id">Rapid Layering</div><p class="rule-why">Funds traverse ≥3 hops in under 24 hours, deliberately obscuring the beneficial ownership trail.</p></div>
+      <div class="rule-card"><div class="rule-id">Round-Trip Cycling</div><p class="rule-why">Funds return to the originating account after passing through one or more intermediaries — a classic integration indicator.</p></div>
+      <div class="rule-card"><div class="rule-id">Fan-In Aggregation</div><p class="rule-why">Many accounts funnel into one — structuring across multiple originators to avoid individual reporting thresholds.</p></div>
+    </div>
+
+    <!-- ══ MACHINE LEARNING ═══════════════════════════════════════ -->
+    <div class="section-label">Machine Learning</div>
+    <h2>XGBoost Classifier</h2>
+    <p>
+      The risk scoring model is an <a href="https://xgboost.readthedocs.io/en/stable/" target="_blank">XGBoost</a> binary classifier trained to distinguish legitimate transactions from suspicious ones. It is trained on the <a href="https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml" target="_blank">IBM AMLworld dataset</a> (NeurIPS 2023) — a six-file CSV collection of high/low-income transaction categories at small, medium, and large volume tiers. When real data is unavailable, the pipeline falls back to generating 2,000 synthetic transactions.
     </p>
 
-    <h3>6. Case Management & SAR Workflow</h3>
+    <h3>Training Data</h3>
+
+    <!-- Synthetic data distribution visual -->
+    <div style="border:1px solid var(--gray-200);border-radius:6px;padding:1.5rem;background:var(--gray-100);margin:1.5rem 0;">
+      <div class="arch-label" style="font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray-400);margin-bottom:1rem;">Synthetic Fallback — 2,000 Transactions</div>
+      <div style="display:flex;align-items:flex-end;gap:1rem;height:90px;padding:0 1rem;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:7;">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--green-dark);">1,400</div>
+          <div style="width:100%;height:72px;background:var(--green-light);border:1px solid var(--green-mid);border-radius:2px 2px 0 0;"></div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--gray-400);">legitimate (70%)</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:3;">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--red-dark);">600</div>
+          <div style="width:100%;height:30px;background:var(--red-light);border:1px solid var(--red-mid);border-radius:2px 2px 0 0;"></div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--gray-400);">suspicious (30%)</div>
+        </div>
+      </div>
+      <div style="margin-top:1rem;display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+        <div style="font-size:0.8rem;color:var(--gray-600);">Legitimate: card payments, internal transfers, wire transfers. Low-risk countries, business hours, amounts €10–€5,000.</div>
+        <div style="font-size:0.8rem;color:var(--gray-600);">Suspicious: mixed structuring bands (€8,500–€9,999), high-risk countries, night timestamps, crypto exchanges.</div>
+      </div>
+    </div>
+
+    <p class="note">IBM AMLworld is preferred when available in <code>data/</code>. The pipeline loads up to 3 CSV files (≤5,000 rows each), maps IBM payment format labels to the internal transaction type schema, and validates that the positive rate exceeds 1% before training.</p>
+
+    <h3>14 Engineered Features</h3>
+    <p>All features are derived programmatically in <code>models/features.py</code> from raw transaction fields. No manual labelling is required.</p>
+
+    <div class="feature-grid">
+      <div class="feature-pill amount">amount_log</div>
+      <div class="feature-pill amount">amount_eur</div>
+      <div class="feature-pill amount">is_near_ctr_threshold</div>
+      <div class="feature-pill amount">is_above_ctr</div>
+      <div class="feature-pill amount">is_round_number</div>
+      <div class="feature-pill time">hour_of_day</div>
+      <div class="feature-pill time">is_night</div>
+      <div class="feature-pill time">is_weekend</div>
+      <div class="feature-pill geo">is_cross_border</div>
+      <div class="feature-pill geo">is_high_risk_country</div>
+      <div class="feature-pill geo">is_greylist_country</div>
+      <div class="feature-pill type">transaction_type_wire</div>
+      <div class="feature-pill type">transaction_type_crypto</div>
+      <div class="feature-pill type">transaction_type_cash</div>
+    </div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.5rem;">
+      <span style="font-family:var(--mono);font-size:9px;color:var(--blue-dark);">■ Amount</span>
+      <span style="font-family:var(--mono);font-size:9px;color:var(--amber-dark);">■ Time</span>
+      <span style="font-family:var(--mono);font-size:9px;color:var(--red-dark);">■ Geographic</span>
+      <span style="font-family:var(--mono);font-size:9px;color:var(--green-dark);">■ Transaction Type</span>
+    </div>
+
+    <h3>Model Hyperparameters</h3>
+    <div class="params-grid">
+      <div class="param-card">
+        <div class="param-key">n_estimators</div>
+        <div class="param-val">200</div>
+        <div class="param-note">Boosting rounds; capped by early stopping</div>
+      </div>
+      <div class="param-card">
+        <div class="param-key">max_depth</div>
+        <div class="param-val">6</div>
+        <div class="param-note">Sufficient for feature interactions without overfitting</div>
+      </div>
+      <div class="param-card">
+        <div class="param-key">learning_rate</div>
+        <div class="param-val">0.10</div>
+        <div class="param-note">Conservative shrinkage; balances bias/variance</div>
+      </div>
+      <div class="param-card">
+        <div class="param-key">scale_pos_weight</div>
+        <div class="param-val">auto</div>
+        <div class="param-note">= negatives / positives; corrects class imbalance</div>
+      </div>
+      <div class="param-card">
+        <div class="param-key">eval_metric</div>
+        <div class="param-val">AUC</div>
+        <div class="param-note">Optimises ranking, not accuracy — better for imbalanced data</div>
+      </div>
+      <div class="param-card">
+        <div class="param-key">early_stopping</div>
+        <div class="param-val">20</div>
+        <div class="param-note">Stops if AUC on held-out test set doesn't improve for 20 rounds</div>
+      </div>
+    </div>
+
+    <h3>SHAP Explainability</h3>
     <p>
-      Alerts above a configurable threshold enter an investigator queue ranked by risk score.
-      The investigator dashboard surfaces the full evidence pack: transaction history, entity
-      profile, network graph visualisation, rule flags, and SHAP explanation. Investigators can
-      escalate to a Suspicious Activity Report, with the platform auto-populating the SAR
-      narrative template from the alert data. Every action is written to an immutable audit trail
-      for regulatory review.
+      Every prediction is accompanied by <a href="https://shap.readthedocs.io/en/latest/" target="_blank">SHAP (SHapley Additive exPlanations)</a> values — a game-theoretic approach that assigns each feature a contribution to the final score. This satisfies <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank">EU AI Act</a> interpretability requirements and provides compliance officers with an auditable explanation for every automated decision.
     </p>
+
+    <h3>Reference Case: Iran Wire Transfer</h3>
+    <p>A €9,750 international wire from Germany to Iran, timestamped 02:34 AM. The model scores this SAR_REQUIRED. The SHAP breakdown shows which features drove the decision:</p>
+
+    <div class="shap-bar">
+      <div class="shap-row">
+        <div class="shap-label">is_high_risk_country</div>
+        <div class="shap-track"><div class="shap-fill risk" style="width:82.1%"></div></div>
+        <div class="shap-val">+0.821</div>
+      </div>
+      <div class="shap-row">
+        <div class="shap-label">is_near_ctr_threshold</div>
+        <div class="shap-track"><div class="shap-fill risk" style="width:61.4%"></div></div>
+        <div class="shap-val">+0.614</div>
+      </div>
+      <div class="shap-row">
+        <div class="shap-label">is_night</div>
+        <div class="shap-track"><div class="shap-fill risk" style="width:39.2%"></div></div>
+        <div class="shap-val">+0.392</div>
+      </div>
+      <div class="shap-row">
+        <div class="shap-label">is_cross_border</div>
+        <div class="shap-track"><div class="shap-fill risk" style="width:28%"></div></div>
+        <div class="shap-val">+0.280</div>
+      </div>
+      <div class="shap-row">
+        <div class="shap-label">transaction_type_wire</div>
+        <div class="shap-track"><div class="shap-fill risk" style="width:18%"></div></div>
+        <div class="shap-val">+0.180</div>
+      </div>
+      <div class="shap-row">
+        <div class="shap-label">account_age_days</div>
+        <div class="shap-track"><div class="shap-fill mitigate" style="width:12%"></div></div>
+        <div class="shap-val">−0.120</div>
+      </div>
+    </div>
+    <p style="font-size:0.85rem;color:var(--gray-600);">Red bars increase risk; green bar mitigates. The account age signal partially offsets the other factors — an older, established account is modestly less suspicious than a recently opened one, all else equal.</p>
+
+    <!-- ══ SAR WORKFLOW ════════════════════════════════════════════ -->
+    <div class="section-label">SAR Workflow</div>
+    <h2>Suspicious Activity Reporting</h2>
+    <p>SAR reports follow the <a href="https://www.bafin.de/EN/Aufsicht/GeldwaescheFinanzierung/Verdachtsanzeigen/verdachtsanzeigen_node.html" target="_blank">BaFin GwG format</a> required for FIU submission via the goAML portal. Each report receives an auto-generated ID in the format <code>SAR-YYYYMMDD-TXID</code> and enters DRAFT status pending compliance officer sign-off.</p>
 
     <div class="flow-steps">
       <div class="flow-step">
         <div class="flow-step-num">01</div>
-        <div class="flow-step-body"><strong>Alert generated</strong><p>Transaction exceeds risk threshold — enters queue with score and evidence pack.</p></div>
+        <div class="flow-step-body"><strong>Agent drafts SAR narrative</strong><p>Claude compiles transaction facts, SHAP attributions, network findings, and triggered regulatory rules into the standardised BaFin template — with inline statutory citations at every assertion.</p></div>
       </div>
       <div class="flow-step">
         <div class="flow-step-num">02</div>
-        <div class="flow-step-body"><strong>Investigator review</strong><p>Analyst reviews network graph, SHAP breakdown, and transaction timeline. Adds case notes.</p></div>
+        <div class="flow-step-body"><strong>Compliance officer review</strong><p>Report surfaces in the case queue as DRAFT. Designated officer reviews findings, may annotate, and approves or rejects the SAR before submission.</p></div>
       </div>
       <div class="flow-step">
         <div class="flow-step-num">03</div>
-        <div class="flow-step-body"><strong>Disposition</strong><p>Alert is closed as a false positive, escalated to SAR filing, or held pending additional information.</p></div>
+        <div class="flow-step-body"><strong>goAML submission</strong><p>Approved SAR is forwarded to BaFin's Financial Intelligence Unit. Submission timestamp and portal reference number are written to the audit trail.</p></div>
       </div>
       <div class="flow-step">
         <div class="flow-step-num">04</div>
-        <div class="flow-step-body"><strong>SAR generation</strong><p>Platform drafts the SAR narrative from structured alert data. Compliance officer reviews and submits to FinCEN/FCA.</p></div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-step-num">05</div>
-        <div class="flow-step-body"><strong>Audit trail</strong><p>Every view, edit, and decision is timestamped and attributed — immutable log available for regulatory examination.</p></div>
+        <div class="flow-step-body"><strong>Tipping-off safeguard</strong><p>GwG §47 Abs. 5 is enforced at the UI level — no customer-facing communication may reference the SAR case. The prohibition is printed on every report as a statutory notice.</p></div>
       </div>
     </div>
 
-    <p class="note">
-      AML Shield is in active development. Architecture and feature scope are subject to change as
-      the design is validated against financial-grade compliance requirements.
-    </p>
+    <div class="warning-note">
+      Statutory notice on every SAR output: "Alerting the customer about this SAR filing constitutes a criminal offence under GwG §47 Abs. 5."
+    </div>
+
+    <p class="note">AML Shield is in active development. Architecture and regulatory mappings are subject to change as the design is validated against production compliance requirements.</p>
 
   </main>
 </body>
