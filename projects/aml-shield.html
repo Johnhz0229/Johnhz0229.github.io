@@ -314,219 +314,6 @@
       <span class="tag">6AMLD</span>
     </div>
 
-    <!-- ══ REACT AGENT ══════════════════════════════════════════ -->
-    <div class="section-label">The ReAct Agent</div>
-    <h2>Reason, Act, Observe — in a Loop</h2>
-    <p>
-      <a href="https://arxiv.org/abs/2210.03629" target="_blank">ReAct</a> (Reasoning + Acting) is a prompting paradigm where a language model alternates between <em>thinking</em> about what to do and <em>calling tools</em> to do it. Each tool result feeds back into the model's context, allowing it to update its reasoning before deciding the next action. AML Shield's agent loop runs up to 10 iterations before forcing a final decision.
-    </p>
-
-    <!-- ReAct cycle visual -->
-    <div class="react-cycle">
-      <div class="react-node-wrap">
-        <div class="react-node think">
-          <div class="rn-label">Step 1</div>
-          <div class="rn-title">Think</div>
-        </div>
-        <div class="react-caption">Analyze transaction,<br>pick next tool</div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:center;margin-top:-30px;">
-        <div class="react-arrow-curved">→</div>
-      </div>
-      <div class="react-node-wrap">
-        <div class="react-node act">
-          <div class="rn-label">Step 2</div>
-          <div class="rn-title">Act</div>
-        </div>
-        <div class="react-caption">Call tool with<br>precise inputs</div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:center;margin-top:-30px;">
-        <div class="react-arrow-curved">→</div>
-      </div>
-      <div class="react-node-wrap">
-        <div class="react-node observe">
-          <div class="rn-label">Step 3</div>
-          <div class="rn-title">Observe</div>
-        </div>
-        <div class="react-caption">Read result,<br>update assessment</div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:center;margin-top:-30px;">
-        <div class="react-arrow-curved" style="color:#ccc;">↩</div>
-        <div class="react-loop-label">repeat up to 10×</div>
-      </div>
-    </div>
-
-    <p>
-      Concretely: Claude receives a formatted transaction table, reasons about which of the five registered tools to call, executes it via the <a href="https://docs.anthropic.com/en/docs/build-with-claude/tool-use" target="_blank">Anthropic tool-use API</a>, reads the result, updates its internal risk model, and decides whether to call another tool or produce a final decision. The entire chain — every thought, every tool call, every result — is stored in <code>reasoning_chain</code> and written to an immutable audit trail.
-    </p>
-
-    <h3>The Five Tools</h3>
-    <p>Claude has exactly five tools available. The system prompt mandates a default calling order but allows deviations through conditional branching rules.</p>
-
-    <div class="tool-timeline">
-      <div class="tool-item">
-        <div class="tool-dot blue">①</div>
-        <div class="tool-body">
-          <div class="tool-name">transaction_risk_scorer</div>
-          <div class="tool-desc">Runs the XGBoost model on the transaction. Returns a <code>risk_score</code> 0–100, a confidence interval, and SHAP feature attributions. <strong>Always called first.</strong> The score determines which subsequent tools are invoked and at what depth.</div>
-        </div>
-      </div>
-      <div class="tool-item">
-        <div class="tool-dot amber">②</div>
-        <div class="tool-body">
-          <div class="tool-name">entity_network_analyzer</div>
-          <div class="tool-desc">Uses NetworkX to traverse the transaction graph around the sender/receiver accounts. Detects structuring (smurfing), layering, fan-out, fan-in, and cycle patterns. Default depth is 2 hops; escalates to depth 3 when score &gt; 80. If flagged connections are returned, the agent calls this tool again recursively on the flagged account.</div>
-          <div class="tool-cond">Rule A: skipped if score &lt; 30 and domestic</div>
-          <div class="tool-cond" style="margin-left:4px;">Rule B: depth=3 if score &gt; 80</div>
-          <div class="tool-cond" style="margin-left:4px;">Rule C: recursive if flagged_connections non-empty</div>
-        </div>
-      </div>
-      <div class="tool-item">
-        <div class="tool-dot amber">③</div>
-        <div class="tool-body">
-          <div class="tool-name">regulatory_rule_checker</div>
-          <div class="tool-desc">Checks the transaction against all applicable regulatory obligations: GwG, FATF 40 Recommendations, EU 6AMLD, Wire Transfer Regulation 2015/847, and EU MiCA (for crypto). Returns triggered rules with severity levels and <em>exact</em> statutory citations, e.g. "GwG §43 Abs. 1 triggered — amount ≥ €10,000 cash deposit".</div>
-        </div>
-      </div>
-      <div class="tool-item">
-        <div class="tool-dot red">④</div>
-        <div class="tool-body">
-          <div class="tool-name">sar_report_generator</div>
-          <div class="tool-desc">Generates a Suspicious Activity Report in BaFin/GwG format for submission via the <a href="https://www.bafin.de/EN/Aufsicht/GeldwaescheFinanzierung/Verdachtsanzeigen/verdachtsanzeigen_node.html" target="_blank">goAML portal</a>. Only invoked when <code>risk_score ≥ 80</code> or a sanctions match is confirmed. Auto-populates the narrative template with all prior findings and appends a tipping-off warning per GwG §47 Abs. 5.</div>
-          <div class="tool-cond">Rule E: immediate if sanctions match detected</div>
-        </div>
-      </div>
-      <div class="tool-item">
-        <div class="tool-dot green">⑤</div>
-        <div class="tool-body">
-          <div class="tool-name">case_escalation_decider</div>
-          <div class="tool-desc">The final arbiter. Accepts the risk score, network risk tier, count of triggered rules, and Claude's reasoning summary. Returns one of four decisions, a case priority, an SLA in hours, and the assigned compliance queue. <strong>Always called last.</strong></div>
-        </div>
-      </div>
-    </div>
-
-    <h3>Conditional Branching Rules</h3>
-    <p>The system prompt hardcodes five rules that override the default tool sequence. They encode the same judgment calls a senior compliance officer would make intuitively.</p>
-
-    <div class="rule-cards">
-      <div class="rule-card">
-        <div class="rule-id">Rule A — Low Risk Shortcut</div>
-        <code class="rule-if">IF score &lt; 30 AND domestic</code>
-        <code class="rule-then">THEN skip network analysis</code>
-        <p class="rule-why">Domestic low-risk transactions don't warrant graph traversal. Cuts latency for the majority of legitimate payments.</p>
-      </div>
-      <div class="rule-card">
-        <div class="rule-id">Rule B — Deep Network Analysis</div>
-        <code class="rule-if">IF score &gt; 80</code>
-        <code class="rule-then">THEN network depth = 3</code>
-        <p class="rule-why">High-risk transactions require deeper traversal to surface layering across three degrees of separation.</p>
-      </div>
-      <div class="rule-card">
-        <div class="rule-id">Rule C — Recursive Investigation</div>
-        <code class="rule-if">IF flagged_connections not empty</code>
-        <code class="rule-then">THEN re-run network on flagged account</code>
-        <p class="rule-why">One hop is not sufficient — flagged accounts must be investigated to their source.</p>
-      </div>
-      <div class="rule-card">
-        <div class="rule-id">Rule D — Grey Zone Analysis</div>
-        <code class="rule-if">IF 40 ≤ score ≤ 60</code>
-        <code class="rule-then">THEN document FOR / AGAINST before deciding</code>
-        <p class="rule-why">Ambiguous cases require documented balanced analysis for the audit trail — a formal pro/con before any escalation decision.</p>
-      </div>
-      <div class="rule-card">
-        <div class="rule-id">Rule E — Sanctions Fast-Track</div>
-        <code class="rule-if">IF sanctions match detected</code>
-        <code class="rule-then">THEN SAR immediately, skip remaining tools</code>
-        <p class="rule-why">Sanctions matches are per-se SAR events under EU 6AMLD Art. 18 — no further analysis is needed or permitted.</p>
-      </div>
-      <div class="rule-card" style="border-color:var(--red-mid);background:var(--red-light);">
-        <div class="rule-id" style="color:var(--red-dark);">Conservative Default</div>
-        <code class="rule-if" style="color:var(--red-dark);background:#fff;">IF uncertain between tiers</code>
-        <code class="rule-then" style="color:var(--red-dark);background:#fff;">THEN escalate higher</code>
-        <p class="rule-why">Under GwG §17, under-reporting carries criminal liability. The system prompt explicitly instructs Claude to default upward when in doubt.</p>
-      </div>
-    </div>
-
-    <h3>System Prompt Architecture</h3>
-    <p>The system prompt is divided into eight numbered sections, each addressing a different aspect of the agent's behaviour. It is treated as a legal instrument — the comment at the top of the file reads: <em>DO NOT modify regulatory citations in this file.</em></p>
-
-    <div class="prompt-structure">
-      <div class="prompt-row">
-        <div class="prompt-num">§1</div>
-        <div class="prompt-section">Role Definition</div>
-        <div class="prompt-detail">Positions the agent as a licensed compliance officer. Sets accountability framing: "Every decision you make carries legal weight."</div>
-      </div>
-      <div class="prompt-row">
-        <div class="prompt-num">§2</div>
-        <div class="prompt-section">Regulatory Framework</div>
-        <div class="prompt-detail">Exhaustive citation list: GwG §10, §17, §43, §47; FATF Rec. 16/19/20/29; EU 6AMLD; Wire Transfer Reg. 2015/847; MiCA 2023/1114.</div>
-      </div>
-      <div class="prompt-row">
-        <div class="prompt-num">§3</div>
-        <div class="prompt-section">ReAct Protocol</div>
-        <div class="prompt-detail">Defines the Think → Act → Observe loop. Requires Claude to explicitly state what it learned from each tool result before deciding the next action.</div>
-      </div>
-      <div class="prompt-row">
-        <div class="prompt-num">§4</div>
-        <div class="prompt-section">Tool Calling Order</div>
-        <div class="prompt-detail">Default sequence: scorer → network → rules → SAR → decider. Explicitly marked as overridable by the conditional rules in §5.</div>
-      </div>
-      <div class="prompt-row">
-        <div class="prompt-num">§5</div>
-        <div class="prompt-section">Conditional Branching</div>
-        <div class="prompt-detail">Rules A through E. Prefixed with "CRITICAL — You MUST follow these rules" to ensure reliable adherence.</div>
-      </div>
-      <div class="prompt-row">
-        <div class="prompt-num">§6</div>
-        <div class="prompt-section">Decision Thresholds</div>
-        <div class="prompt-detail">Score-to-decision mapping table: 0–29 CLEAR, 30–59 WATCHLIST, 60–79 ESCALATE, 80–100 SAR_REQUIRED, with SLA hours for each tier.</div>
-      </div>
-      <div class="prompt-row">
-        <div class="prompt-num">§7</div>
-        <div class="prompt-section">Output Format</div>
-        <div class="prompt-detail">Mandates a structured output block (DECISION, Risk Score, Key Findings, Regulatory Basis, Reasoning) for downstream parsing and audit logging.</div>
-      </div>
-      <div class="prompt-row">
-        <div class="prompt-num">§8</div>
-        <div class="prompt-section">Behavioural Rules</div>
-        <div class="prompt-detail">Hard prohibitions: never fabricate tool results, always cite specific articles, never alert the customer (GwG §47 Abs. 5), default to SAR when uncertain.</div>
-      </div>
-    </div>
-
-    <h3>Case Escalation: Four Outcomes</h3>
-    <div class="threshold-bar">
-      <div class="threshold-track">
-        <div class="threshold-seg clear">0–29<br>CLEAR</div>
-        <div class="threshold-seg watch">30–59<br>WATCHLIST</div>
-        <div class="threshold-seg escalate">60–79<br>ESCALATE</div>
-        <div class="threshold-seg sar">80–100<br>SAR</div>
-      </div>
-      <div class="threshold-labels">
-        <div class="threshold-label clear">0</div>
-        <div class="threshold-label watch">30</div>
-        <div class="threshold-label escalate">60</div>
-        <div class="threshold-label sar">100</div>
-      </div>
-    </div>
-    <div class="decision-grid">
-      <div class="decision-card">
-        <div class="verdict clear">CLEAR — score 0–29</div>
-        <p>Consistent with customer risk profile. No action required under GwG. Transaction archived.</p>
-      </div>
-      <div class="decision-card">
-        <div class="verdict watch">WATCHLIST — score 30–59</div>
-        <p>Elevated indicators below SAR threshold. Account flagged for 90-day monitoring window.</p>
-      </div>
-      <div class="decision-card">
-        <div class="verdict escalate">ESCALATE_TO_HUMAN — score 60–79</div>
-        <p>Full evidence pack surfaces for senior compliance officer review within 48h SLA.</p>
-      </div>
-      <div class="decision-card">
-        <div class="verdict sar">SAR_REQUIRED — score 80–100</div>
-        <p>Statutory filing obligation triggered under GwG §43 Abs. 1. SAR filed with BaFin FIU within 24h.</p>
-      </div>
-    </div>
-
     <!-- ══ REGULATORY FRAMEWORK ═══════════════════════════════════ -->
     <div class="section-label">Regulatory Framework</div>
     <h2>Legal Grounding</h2>
@@ -786,6 +573,183 @@
 
     <div class="warning-note">
       Statutory notice on every SAR output: "Alerting the customer about this SAR filing constitutes a criminal offence under GwG §47 Abs. 5."
+    </div>
+
+    <!-- ══ REACT AGENT ══════════════════════════════════════════ -->
+    <div class="section-label">Under the Hood — AI Engine</div>
+    <h2>The ReAct Agent</h2>
+    <p>
+      The platform's decision engine is built on the <a href="https://arxiv.org/abs/2210.03629" target="_blank">ReAct</a> (Reasoning + Acting) pattern — a framework where a language model alternates between <em>thinking</em> about what to do and <em>calling tools</em> to do it. Each tool result feeds back into the model's context, allowing it to update its risk assessment before deciding the next step. AML Shield's loop runs up to 10 iterations and uses <a href="https://docs.anthropic.com/en/docs/build-with-claude/tool-use" target="_blank">Claude Haiku</a> via the Anthropic tool-use API.
+    </p>
+
+    <!-- ReAct cycle visual -->
+    <div class="react-cycle">
+      <div class="react-node-wrap">
+        <div class="react-node think">
+          <div class="rn-label">Step 1</div>
+          <div class="rn-title">Think</div>
+        </div>
+        <div class="react-caption">Analyze transaction,<br>pick next tool</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;margin-top:-30px;">
+        <div class="react-arrow-curved">→</div>
+      </div>
+      <div class="react-node-wrap">
+        <div class="react-node act">
+          <div class="rn-label">Step 2</div>
+          <div class="rn-title">Act</div>
+        </div>
+        <div class="react-caption">Call tool with<br>precise inputs</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;margin-top:-30px;">
+        <div class="react-arrow-curved">→</div>
+      </div>
+      <div class="react-node-wrap">
+        <div class="react-node observe">
+          <div class="rn-label">Step 3</div>
+          <div class="rn-title">Observe</div>
+        </div>
+        <div class="react-caption">Read result,<br>update assessment</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;margin-top:-30px;">
+        <div class="react-arrow-curved" style="color:#ccc;">↩</div>
+        <div class="react-loop-label">repeat up to 10×</div>
+      </div>
+    </div>
+
+    <p>The entire chain — every thought, every tool call, every result — is stored in <code>reasoning_chain</code> and written to an immutable audit trail. The whole reasoning process is available for regulatory examination.</p>
+
+    <h3>The Five Tools</h3>
+    <p>Claude has exactly five registered tools, called in a default sequence that the conditional branching rules can override.</p>
+
+    <div class="tool-timeline">
+      <div class="tool-item">
+        <div class="tool-dot blue">①</div>
+        <div class="tool-body">
+          <div class="tool-name">transaction_risk_scorer</div>
+          <div class="tool-desc">Runs the XGBoost model. Returns <code>risk_score</code> 0–100, confidence interval, and SHAP feature attributions. <strong>Always called first.</strong></div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-dot amber">②</div>
+        <div class="tool-body">
+          <div class="tool-name">entity_network_analyzer</div>
+          <div class="tool-desc">NetworkX graph traversal around sender/receiver accounts. Detects structuring, layering, fan-out/in, and cycle patterns. Default depth 2; depth 3 when score &gt; 80; recursive if flagged connections returned.</div>
+          <div class="tool-cond">Rule A: skipped if score &lt; 30 and domestic</div>
+          <div class="tool-cond" style="margin-left:4px;">Rule B: depth=3 if score &gt; 80</div>
+          <div class="tool-cond" style="margin-left:4px;">Rule C: recursive if flagged_connections non-empty</div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-dot amber">③</div>
+        <div class="tool-body">
+          <div class="tool-name">regulatory_rule_checker</div>
+          <div class="tool-desc">Checks GwG, FATF 40 Recommendations, EU 6AMLD, Wire Transfer Reg. 2015/847, and MiCA. Returns triggered rules with severity and <em>exact</em> statutory citations.</div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-dot red">④</div>
+        <div class="tool-body">
+          <div class="tool-name">sar_report_generator</div>
+          <div class="tool-desc">Generates a BaFin/GwG-format SAR for goAML submission. Only invoked at score ≥ 80 or confirmed sanctions match. Auto-populates narrative and appends GwG §47 Abs. 5 tipping-off warning.</div>
+          <div class="tool-cond">Rule E: immediate if sanctions match detected</div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-dot green">⑤</div>
+        <div class="tool-body">
+          <div class="tool-name">case_escalation_decider</div>
+          <div class="tool-desc">Final arbiter. Accepts risk score, network risk tier, triggered rule count, and Claude's reasoning summary. Returns decision, case priority, SLA hours, and compliance queue. <strong>Always called last.</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Conditional Branching Rules</h3>
+    <p>The system prompt hardcodes five rules that override the default tool sequence — encoding the same proportionality judgments a senior compliance officer would apply intuitively.</p>
+
+    <div class="rule-cards">
+      <div class="rule-card">
+        <div class="rule-id">Rule A — Low Risk Shortcut</div>
+        <code class="rule-if">IF score &lt; 30 AND domestic</code>
+        <code class="rule-then">THEN skip network analysis</code>
+        <p class="rule-why">Domestic low-risk transactions don't warrant graph traversal. Cuts latency for the majority of legitimate payments.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-id">Rule B — Deep Network Analysis</div>
+        <code class="rule-if">IF score &gt; 80</code>
+        <code class="rule-then">THEN network depth = 3</code>
+        <p class="rule-why">High-risk transactions require deeper traversal to surface layering across three degrees of separation.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-id">Rule C — Recursive Investigation</div>
+        <code class="rule-if">IF flagged_connections not empty</code>
+        <code class="rule-then">THEN re-run network on flagged account</code>
+        <p class="rule-why">One hop is insufficient — flagged accounts must be investigated to their source.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-id">Rule D — Grey Zone Analysis</div>
+        <code class="rule-if">IF 40 ≤ score ≤ 60</code>
+        <code class="rule-then">THEN document FOR / AGAINST before deciding</code>
+        <p class="rule-why">Ambiguous cases require documented balanced analysis — a formal pro/con for the audit trail before any escalation decision.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-id">Rule E — Sanctions Fast-Track</div>
+        <code class="rule-if">IF sanctions match detected</code>
+        <code class="rule-then">THEN SAR immediately, skip remaining tools</code>
+        <p class="rule-why">Sanctions matches are per-se SAR events under EU 6AMLD Art. 18 — no further analysis needed or permitted.</p>
+      </div>
+      <div class="rule-card" style="border-color:var(--red-mid);background:var(--red-light);">
+        <div class="rule-id" style="color:var(--red-dark);">Conservative Default</div>
+        <code class="rule-if" style="color:var(--red-dark);background:#fff;">IF uncertain between tiers</code>
+        <code class="rule-then" style="color:var(--red-dark);background:#fff;">THEN escalate higher</code>
+        <p class="rule-why">Under GwG §17, under-reporting carries criminal liability. The system prompt instructs Claude to default upward when in doubt.</p>
+      </div>
+    </div>
+
+    <h3>System Prompt Architecture</h3>
+    <p>The system prompt is divided into eight sections and treated as a legal instrument — the source file header reads: <em>DO NOT modify regulatory citations in this file.</em></p>
+
+    <div class="prompt-structure">
+      <div class="prompt-row">
+        <div class="prompt-num">§1</div>
+        <div class="prompt-section">Role Definition</div>
+        <div class="prompt-detail">Positions the agent as a licensed compliance officer. Sets accountability framing: "Every decision you make carries legal weight."</div>
+      </div>
+      <div class="prompt-row">
+        <div class="prompt-num">§2</div>
+        <div class="prompt-section">Regulatory Framework</div>
+        <div class="prompt-detail">Exhaustive citation list: GwG §10, §17, §43, §47; FATF Rec. 16/19/20/29; EU 6AMLD; Wire Transfer Reg. 2015/847; MiCA 2023/1114.</div>
+      </div>
+      <div class="prompt-row">
+        <div class="prompt-num">§3</div>
+        <div class="prompt-section">ReAct Protocol</div>
+        <div class="prompt-detail">Defines the Think → Act → Observe loop. Requires Claude to explicitly state what it learned from each tool result before deciding the next action.</div>
+      </div>
+      <div class="prompt-row">
+        <div class="prompt-num">§4</div>
+        <div class="prompt-section">Tool Calling Order</div>
+        <div class="prompt-detail">Default sequence: scorer → network → rules → SAR → decider. Explicitly marked as overridable by the conditional rules in §5.</div>
+      </div>
+      <div class="prompt-row">
+        <div class="prompt-num">§5</div>
+        <div class="prompt-section">Conditional Branching</div>
+        <div class="prompt-detail">Rules A through E. Prefixed "CRITICAL — You MUST follow these rules" to ensure reliable adherence.</div>
+      </div>
+      <div class="prompt-row">
+        <div class="prompt-num">§6</div>
+        <div class="prompt-section">Decision Thresholds</div>
+        <div class="prompt-detail">Score-to-decision mapping: 0–29 CLEAR, 30–59 WATCHLIST, 60–79 ESCALATE, 80–100 SAR_REQUIRED, with SLA hours per tier.</div>
+      </div>
+      <div class="prompt-row">
+        <div class="prompt-num">§7</div>
+        <div class="prompt-section">Output Format</div>
+        <div class="prompt-detail">Mandates a structured output block (DECISION, Risk Score, Key Findings, Regulatory Basis, Reasoning) for downstream parsing and audit logging.</div>
+      </div>
+      <div class="prompt-row">
+        <div class="prompt-num">§8</div>
+        <div class="prompt-section">Behavioural Rules</div>
+        <div class="prompt-detail">Hard prohibitions: never fabricate tool results, always cite specific articles, never alert the customer (GwG §47 Abs. 5), default to SAR when uncertain.</div>
+      </div>
     </div>
 
     <p class="note">AML Shield is in active development. Architecture and regulatory mappings are subject to change as the design is validated against production compliance requirements.</p>
