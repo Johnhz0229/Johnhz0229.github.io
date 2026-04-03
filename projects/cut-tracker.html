@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cut Tracker — John Huang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #fafafa;
+      --gray-100: #f4f4f4;
+      --gray-200: #e8e8e8;
+      --gray-400: #999;
+      --gray-600: #555;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --mono: 'DM Mono', monospace;
+      --sans: 'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: transparent;
+      color: var(--black);
+      font-size: 16px;
+      line-height: 1.7;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    .bg-animation {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: -3;
+      background: linear-gradient(-45deg, #ffffff, #fbfcfe, #ffffff, #f8f9fb, #ffffff);
+      background-size: 400% 400%;
+      animation: gradientBG 20s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 3rem;
+      background: rgba(250, 250, 250, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      color: var(--black);
+    }
+
+    .nav-back {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      color: var(--gray-600);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gray-200);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .nav-back:hover {
+      color: var(--black);
+      border-color: var(--black);
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 9rem 3rem 8rem;
+    }
+
+    /* HEADER */
+    .project-meta-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .meta-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--gray-400);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--gray-100);
+      padding: 3px 8px;
+      border-radius: 2px;
+    }
+
+    .meta-tag.live {
+      color: #6a8f6a;
+      background: #f0f7f0;
+    }
+
+    .project-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .project-subtitle {
+      font-size: 1.05rem;
+      color: var(--gray-600);
+      line-height: 1.75;
+      font-weight: 300;
+      margin-bottom: 2rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .link-row {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .proj-link {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gray-400);
+      padding-bottom: 2px;
+      transition: opacity 0.2s;
+    }
+
+    .proj-link:hover { opacity: 0.45; }
+
+    /* SECTION HEADERS */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 1.25rem;
+      margin-top: 3.5rem;
+    }
+
+    h2 {
+      font-family: var(--serif);
+      font-size: 1.45rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+
+    h3 {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-600);
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.85;
+      font-weight: 300;
+      color: #1a1a1a;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ARCHITECTURE DIAGRAM */
+    .arch-diagram {
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      padding: 2rem;
+      margin: 2rem 0;
+      background: var(--gray-100);
+      overflow-x: auto;
+    }
+
+    .arch-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .arch-row:last-child { margin-bottom: 0; }
+
+    .arch-box {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      color: var(--black);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .arch-box.highlight {
+      border-color: #b0c8b0;
+      background: #f0f7f0;
+      color: #3a5e3a;
+    }
+
+    .arch-box.neutral {
+      border-color: #c8c8d8;
+      background: #f4f4f9;
+      color: #3a3a5e;
+    }
+
+    .arch-arrow {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--gray-400);
+    }
+
+    .arch-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--gray-200);
+      margin: 1rem 0;
+    }
+
+    .arch-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+
+    /* FLOW STEPS */
+    .flow-steps {
+      counter-reset: step;
+      margin: 1.5rem 0;
+    }
+
+    .flow-step {
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      align-items: start;
+    }
+
+    .flow-step-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gray-400);
+      padding-top: 3px;
+    }
+
+    .flow-step-body strong {
+      font-weight: 500;
+      font-size: 0.95rem;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .flow-step-body p {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+      margin-bottom: 0;
+      line-height: 1.65;
+    }
+
+    /* FORMULA BOX */
+    .formula-box {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      line-height: 2;
+      background: var(--gray-100);
+      border-left: 3px solid var(--gray-400);
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      color: #2a2a2a;
+    }
+
+    .formula-box .formula-line { display: block; }
+    .formula-box .indent { padding-left: 1.5rem; }
+    .formula-box .result {
+      border-top: 1px solid var(--gray-200);
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    /* TAG ROW */
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      border-radius: 2px;
+      color: var(--gray-600);
+    }
+
+    /* COST NOTE */
+    .note {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--gray-400);
+      line-height: 1.6;
+      border-left: 2px solid var(--gray-200);
+      padding-left: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.5rem; }
+      .wrap { padding: 7rem 1.5rem 5rem; }
+      .arch-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-animation"></div>
+
+  <nav>
+    <a href="../index.html" class="nav-logo">JH</a>
+    <a href="../index.html#projects" class="nav-back">← Projects</a>
+  </nav>
+
+  <main class="wrap">
+
+    <div class="project-meta-header">
+      <span class="meta-tag">Web App</span>
+      <span class="meta-tag live">Live</span>
+    </div>
+
+    <h1 class="project-title">Cut Tracker</h1>
+
+    <p class="project-subtitle">
+      A multi-user fat-loss tracking web app that accepts plain-English meal descriptions and converts them
+      into precise macro breakdowns via AI, presenting daily energy balance in a profit-and-loss accounting format.
+    </p>
+
+    <div class="link-row">
+      <a href="https://cut.john-huang.com" target="_blank" class="proj-link">Live App ↗</a>
+      <a href="https://github.com/Johnhz0229/cut_tracker" target="_blank" class="proj-link">GitHub ↗</a>
+    </div>
+
+    <div class="tag-row">
+      <span class="tag">Python</span>
+      <span class="tag">FastAPI</span>
+      <span class="tag">DeepSeek V3</span>
+      <span class="tag">SQLite</span>
+      <span class="tag">bcrypt</span>
+      <span class="tag">Railway</span>
+    </div>
+
+    <!-- ARCHITECTURE -->
+    <div class="section-label">Architecture</div>
+    <h2>System Overview</h2>
+    <p>
+      Cut Tracker is a server-rendered web application with a Python/FastAPI backend, a SQLite database,
+      and an AI integration layer that calls the DeepSeek V3 API for natural language macro parsing.
+      Authentication is session-token-based with bcrypt password hashing and strict user-scoped data isolation.
+    </p>
+
+    <div class="arch-diagram">
+      <div class="arch-label">Request Flow</div>
+      <div class="arch-row">
+        <div class="arch-box">Browser (HTML/CSS/JS)</div>
+        <div class="arch-arrow">⟷</div>
+        <div class="arch-box highlight">FastAPI Server</div>
+      </div>
+      <div class="arch-divider"></div>
+      <div class="arch-label">Backend Layers</div>
+      <div class="arch-row">
+        <div class="arch-box neutral">Auth Middleware<br><span style="font-size:9px;color:#888">session tokens · bcrypt</span></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box highlight">Route Handlers<br><span style="font-size:9px;color:#888">food log · activity · weight · admin</span></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box neutral">SQLite DB<br><span style="font-size:9px;color:#888">records.db</span></div>
+      </div>
+      <div class="arch-divider"></div>
+      <div class="arch-label">AI Layer</div>
+      <div class="arch-row">
+        <div class="arch-box highlight">Food Log Route</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box neutral">DeepSeek V3 API<br><span style="font-size:9px;color:#888">natural language → macros JSON</span></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box">Macro Parser<br><span style="font-size:9px;color:#888">validate · store · calculate</span></div>
+      </div>
+    </div>
+
+    <!-- LOGIC -->
+    <div class="section-label">Core Logic</div>
+    <h2>How It Works</h2>
+
+    <h3>1. Food Logging via AI</h3>
+    <p>
+      Users describe meals in free-form text (e.g., "two scrambled eggs and a slice of sourdough toast with butter").
+      The input is sent to DeepSeek V3, which returns a structured JSON object with per-item breakdowns:
+      calories, protein, carbohydrates, and fat — both as consumed and per 100g serving.
+      The server validates and stores the result, associating it with the user's session.
+    </p>
+    <p class="note">
+      API cost is approximately $0.0001 per log entry. At one log per day, annual cost is under $0.04.
+    </p>
+
+    <h3>2. Energy Accounting Model</h3>
+    <p>
+      The core of Cut Tracker is a P&amp;L-style energy balance calculation performed fresh on each dashboard load.
+      The model mirrors how an accountant tracks profit: gross income minus costs equals net position.
+    </p>
+
+    <div class="formula-box">
+      <span class="formula-line">Gross Intake           = total calories logged</span>
+      <span class="formula-line indent">− TEF deduction        = protein×25% + carbs×8% + fat×3%</span>
+      <span class="formula-line result">= Net Intake (available energy)</span>
+      <span class="formula-line" style="margin-top:0.75rem;">BMR × NEAT multiplier  = resting + daily activity expenditure</span>
+      <span class="formula-line indent">+ Exercise calories     = MET × weight × duration</span>
+      <span class="formula-line result">= TDEE (total daily energy expenditure)</span>
+      <span class="formula-line" style="margin-top:0.75rem; font-weight:500;">Net Energy = Net Intake − TDEE</span>
+      <span class="formula-line indent" style="color:#6a8f6a;">negative = deficit (green)</span>
+      <span class="formula-line indent" style="color:#b05050;">positive = surplus (red)</span>
+    </div>
+
+    <h3>3. NEAT Activity Multipliers</h3>
+    <p>
+      Non-Exercise Activity Thermogenesis is captured through a daily activity level selector.
+      Multipliers are applied to BMR to compute baseline expenditure before exercise is added:
+    </p>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-step-num">1.10</div>
+        <div class="flow-step-body"><strong>Rest day</strong><p>Sedentary — desk work, minimal movement</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">1.20</div>
+        <div class="flow-step-body"><strong>Light activity</strong><p>Light walking, some standing throughout the day</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">1.35</div>
+        <div class="flow-step-body"><strong>Moderate activity</strong><p>On feet regularly, moderate physical demands</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">1.50</div>
+        <div class="flow-step-body"><strong>Very active</strong><p>Physical labour, high-step-count day</p></div>
+      </div>
+    </div>
+
+    <h3>4. Request Lifecycle</h3>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-step-num">01</div>
+        <div class="flow-step-body"><strong>Authentication</strong><p>Session token extracted from cookie, looked up in DB. Request is rejected if token is absent, expired, or unrecognised.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">02</div>
+        <div class="flow-step-body"><strong>Input handling</strong><p>Form data is sanitised. Food descriptions are forwarded to DeepSeek V3 with a structured prompt enforcing JSON output.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">03</div>
+        <div class="flow-step-body"><strong>Persistence</strong><p>Parsed macro data, activity entries, and weight measurements are written to the user's isolated rows in SQLite.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">04</div>
+        <div class="flow-step-body"><strong>Dashboard computation</strong><p>On each page load, the full energy balance is recomputed from today's records and rendered. Historical charts aggregate 7-day and 30-day windows.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">05</div>
+        <div class="flow-step-body"><strong>Export</strong><p>One-click CSV generation serialises all of the user's records and returns them as a file download.</p></div>
+      </div>
+    </div>
+
+    <h3>5. Multi-user & Admin</h3>
+    <p>
+      All data queries are scoped by user ID derived from the session token — no cross-user data leakage is possible
+      through the standard routes. A hidden admin panel at <code>/admin</code> is protected by a separate secret key
+      and provides account creation and deletion capabilities.
+    </p>
+
+    <!-- DEPLOYMENT -->
+    <div class="section-label">Deployment</div>
+    <h2>Infrastructure</h2>
+    <p>
+      The application is deployed on Railway, connected directly to the GitHub repository for continuous deployment.
+      The SQLite database file is persisted via a Railway volume mount. Environment variables manage the DeepSeek API
+      key, admin secret, and session signing key — none are committed to the repository.
+    </p>
+
+    <div class="arch-diagram">
+      <div class="arch-row">
+        <div class="arch-box">GitHub Repo</div>
+        <div class="arch-arrow">→ push triggers deploy →</div>
+        <div class="arch-box highlight">Railway Container</div>
+      </div>
+      <div class="arch-row" style="margin-top: 0.75rem;">
+        <div class="arch-box neutral">Environment Variables<br><span style="font-size:9px;color:#888">API keys · secrets</span></div>
+        <div class="arch-arrow">+</div>
+        <div class="arch-box neutral">Persistent Volume<br><span style="font-size:9px;color:#888">records.db</span></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box highlight">cut.john-huang.com</div>
+      </div>
+    </div>
+
+  </main>
+</body>
+</html>
