@@ -344,6 +344,55 @@
       color: var(--gray-600);
     }
 
+    /* EXAMPLE BLOCK */
+    .example-block {
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .example-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 0.75rem;
+    }
+
+    .example-input {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: #3a3a5e;
+      background: #f4f4f9;
+      border: 1px solid #c8c8d8;
+      border-radius: 4px;
+      padding: 0.6rem 0.9rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.6;
+    }
+
+    .example-output {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: #3a5e3a;
+      background: #f0f7f0;
+      border: 1px solid #b0c8b0;
+      border-radius: 4px;
+      padding: 0.6rem 0.9rem;
+      line-height: 1.8;
+    }
+
+    .example-arrow {
+      font-size: 0.8rem;
+      color: var(--gray-400);
+      text-align: center;
+      margin: 0.4rem 0;
+      font-family: var(--mono);
+    }
+
     /* COST NOTE */
     .note {
       font-family: var(--mono);
@@ -398,6 +447,75 @@
       <span class="tag">bcrypt</span>
       <span class="tag">Railway</span>
     </div>
+
+    <!-- BACKGROUND -->
+    <div class="section-label">Background</div>
+    <h2>Why I Built This</h2>
+    <p>
+      I wanted a dead-simple way to know my calorie balance at any point in the day — not a full nutrition
+      app, just a quick answer to "am I in a deficit today?"
+    </p>
+    <p>
+      My first approach was a dedicated calorie-tracking app. The workflow was: search for the food,
+      find the right entry, log the gram weight, repeat for every ingredient. It worked, but the lookup
+      friction was real — and exporting data in any usable format was painful enough that I stopped doing it.
+    </p>
+    <p>
+      I switched to a personal Excel sheet with hand-written formulas. That removed the export problem,
+      but I still had to look up macro values for every food item, either through an AI chat or a nutrition
+      database, then copy numbers into cells. Two tools, two windows, lots of switching.
+    </p>
+    <p>
+      The fix was obvious: collapse everything into one step. Describe the meal in plain English, let an AI
+      handle the lookup and calculation, store the result automatically, and surface it as a clean dashboard
+      with a one-click CSV export. That's Cut Tracker.
+    </p>
+
+    <div class="section-label">Usage Examples</div>
+    <h2>In Practice</h2>
+
+    <h3>Logging a meal</h3>
+    <div class="example-block">
+      <div class="example-label">You type</div>
+      <div class="example-input">two scrambled eggs cooked in butter, a slice of sourdough toast, and a medium latte with oat milk</div>
+      <div class="example-arrow">↓ AI parses &amp; returns structured JSON ↓</div>
+      <div class="example-output">
+        Eggs (2, scrambled, ~10g butter)  — 220 kcal · P 14g · C 0g · F 17g<br>
+        Sourdough toast (1 slice, ~40g)   — 105 kcal · P 4g · C 20g · F 1g<br>
+        Oat milk latte (medium, ~350ml)   — 130 kcal · P 4g · C 19g · F 4g<br>
+        ─────────────────────────────────────────────────────────<br>
+        Total                             — 455 kcal · P 22g · C 39g · F 22g
+      </div>
+    </div>
+
+    <h3>Logging exercise</h3>
+    <div class="example-block">
+      <div class="example-label">You type</div>
+      <div class="example-input">45 min weightlifting + 20 min brisk walk</div>
+      <div class="example-arrow">↓ MET-based calculation ↓</div>
+      <div class="example-output">
+        Weightlifting (45 min)  — ~270 kcal<br>
+        Brisk walk (20 min)     — ~110 kcal<br>
+        ──────────────────────────────────<br>
+        Exercise total          — ~380 kcal added to TDEE
+      </div>
+    </div>
+
+    <h3>End-of-day balance</h3>
+    <div class="example-block">
+      <div class="example-label">Dashboard shows</div>
+      <div class="example-output">
+        Net Intake (after TEF)   — 1,840 kcal<br>
+        TDEE (BMR × NEAT + exer) — 2,310 kcal<br>
+        ──────────────────────────────────────<br>
+        Net Energy Balance       — −470 kcal  ✓ deficit
+      </div>
+    </div>
+
+    <p>
+      When the cut is done, hit Export — every logged day comes out as a CSV with per-item macros,
+      daily totals, and energy balance, ready for further analysis in Excel or wherever.
+    </p>
 
     <!-- ARCHITECTURE -->
     <div class="section-label">Architecture</div>
