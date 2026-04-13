@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Credit RP Diagnostic — John Huang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #fafafa;
+      --gray-100: #f4f4f4;
+      --gray-200: #e8e8e8;
+      --gray-400: #999;
+      --gray-600: #555;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --mono: 'DM Mono', monospace;
+      --sans: 'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: transparent;
+      color: var(--black);
+      font-size: 16px;
+      line-height: 1.7;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    .bg-animation {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: -3;
+      background: linear-gradient(-45deg, #ffffff, #fbfcfe, #ffffff, #f8f9fb, #ffffff);
+      background-size: 400% 400%;
+      animation: gradientBG 20s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 3rem;
+      background: rgba(250, 250, 250, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      color: var(--black);
+    }
+
+    .nav-back {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      color: var(--gray-600);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gray-200);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .nav-back:hover {
+      color: var(--black);
+      border-color: var(--black);
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 9rem 3rem 8rem;
+    }
+
+    /* HEADER */
+    .project-meta-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .meta-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--gray-400);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--gray-100);
+      padding: 3px 8px;
+      border-radius: 2px;
+    }
+
+    .meta-tag.research {
+      color: #5a7a8f;
+      background: #f0f5f9;
+    }
+
+    .project-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .project-subtitle {
+      font-size: 1.05rem;
+      color: var(--gray-600);
+      line-height: 1.75;
+      font-weight: 300;
+      margin-bottom: 2rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .link-row {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .proj-link {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gray-400);
+      padding-bottom: 2px;
+      transition: opacity 0.2s;
+    }
+
+    .proj-link:hover { opacity: 0.45; }
+
+    /* SECTION HEADERS */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 1.25rem;
+      margin-top: 3.5rem;
+    }
+
+    h2 {
+      font-family: var(--serif);
+      font-size: 1.45rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+
+    h3 {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-600);
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.85;
+      font-weight: 300;
+      color: #1a1a1a;
+      margin-bottom: 1.25rem;
+    }
+
+    /* RESULT BOX */
+    .result-box {
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      background: #f9fafb;
+    }
+
+    .result-box h4 {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 0.75rem;
+    }
+
+    .result-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .result-row:last-child { margin-bottom: 0; }
+
+    .result-item {
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .result-label {
+      color: var(--gray-400);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .result-value {
+      color: var(--black);
+      font-weight: 500;
+      margin-top: 0.2rem;
+    }
+
+    /* METHODOLOGY */
+    .methodology-step {
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      align-items: start;
+    }
+
+    .step-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gray-400);
+      padding-top: 3px;
+    }
+
+    .step-body strong {
+      font-weight: 500;
+      font-size: 0.95rem;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .step-body p {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+      margin-bottom: 0;
+      line-height: 1.65;
+    }
+
+    /* TAG ROW */
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      border-radius: 2px;
+      color: var(--gray-600);
+    }
+
+    /* FORMULA BOX */
+    .formula-box {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      line-height: 2;
+      background: var(--gray-100);
+      border-left: 3px solid var(--gray-400);
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      color: #2a2a2a;
+    }
+
+    .formula-box .formula-line { display: block; }
+    .formula-box .indent { padding-left: 1.5rem; }
+
+    /* NOTE */
+    .note {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--gray-400);
+      line-height: 1.6;
+      border-left: 2px solid var(--gray-200);
+      padding-left: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.5rem; }
+      .wrap { padding: 7rem 1.5rem 5rem; }
+      .result-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-animation"></div>
+
+  <nav>
+    <a href="../index.html" class="nav-logo">JH</a>
+    <a href="../index.html#projects" class="nav-back">← Projects</a>
+  </nav>
+
+  <main class="wrap">
+
+    <div class="project-meta-header">
+      <span class="meta-tag">Research</span>
+      <span class="meta-tag research">ML Diagnostics</span>
+    </div>
+
+    <h1 class="project-title">Credit RP Diagnostic</h1>
+
+    <p class="project-subtitle">
+      A regulatory-focused diagnostic tool that quantifies feature redundancy in credit risk models using sparse random projections.
+      Assesses effective dimensionality of credit datasets to identify over-parameterization and ensure compliance with Basel IRB and IFRS 9 validation frameworks.
+    </p>
+
+    <div class="link-row">
+      <a href="https://github.com/Johnhz0229/credit-rp-diagnostic" target="_blank" class="proj-link">GitHub ↗</a>
+    </div>
+
+    <div class="tag-row">
+      <span class="tag">Python</span>
+      <span class="tag">Machine Learning</span>
+      <span class="tag">Scikit-learn</span>
+      <span class="tag">Dimensionality Reduction</span>
+      <span class="tag">Regulatory Compliance</span>
+    </div>
+
+    <!-- PROBLEM -->
+    <div class="section-label">Motivation</div>
+    <h2>The Over-Parameterization Problem</h2>
+    <p>
+      Credit risk models used in Basel IRB and IFRS 9 frameworks must demonstrate stability and predictive power.
+      A common failure mode is feature bloat: models incorporate dozens of features, many of which are highly correlated
+      or redundant, creating instability under stress testing and regulatory scrutiny. This diagnostic quantifies exactly
+      how many features are truly independent.
+    </p>
+
+    <!-- METHODOLOGY -->
+    <div class="section-label">Methodology</div>
+    <h2>Sparse Random Projection Approach</h2>
+    <p>
+      Rather than traditional dimensionality reduction (PCA, autoencoders), this project uses sparse random projections—
+      a computationally efficient method that preserves pairwise distances while projecting high-dimensional data into
+      lower-dimensional spaces. The approach:
+    </p>
+
+    <div class="methodology-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>Baseline Model</strong>
+        <p>Train a balanced logistic regression classifier on the full feature set (59 credit features post-processing)
+        using the Home Credit Default Risk dataset (300k samples, binary classification).</p>
+      </div>
+    </div>
+
+    <div class="methodology-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>Incremental Projection</strong>
+        <p>Apply sparse random projection to reduce the feature space from k to 1, measuring AUC at each dimension.
+        The "elbow" point where AUC plateaus indicates the intrinsic dimensionality.</p>
+      </div>
+    </div>
+
+    <div class="methodology-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <strong>Ensemble Averaging</strong>
+        <p>Run the projection pipeline 20 times with different random seeds and average the AUC curves.
+        This stabilizes results against seed-dependent variance.</p>
+      </div>
+    </div>
+
+    <div class="methodology-step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <strong>Redundancy Quantification</strong>
+        <p>Calculate the redundancy ratio as (total features − intrinsic dimensions) / total features.
+        This ratio is the compliance metric reported to regulators.</p>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="section-label">Results</div>
+    <h2>Diagnostic Findings</h2>
+
+    <div class="result-box">
+      <h4>Model Complexity Audit</h4>
+      <div class="result-row">
+        <div class="result-item">
+          <div class="result-label">Original Feature Count</div>
+          <div class="result-value">59</div>
+        </div>
+        <div class="result-item">
+          <div class="result-label">Intrinsic Dimensions</div>
+          <div class="result-value">50</div>
+        </div>
+      </div>
+      <div class="result-row">
+        <div class="result-item">
+          <div class="result-label">Redundancy Ratio</div>
+          <div class="result-value">15.3%</div>
+        </div>
+        <div class="result-item">
+          <div class="result-label">Baseline AUC</div>
+          <div class="result-value">0.7251</div>
+        </div>
+      </div>
+    </div>
+
+    <p>
+      <strong>Regulatory Verdict:</strong> PASS — Well-calibrated dimensionality. The model is not over-parameterized;
+      redundancy is modest and the effective feature space is tightly aligned with intrinsic data structure.
+      This positioning provides strong defense against accusations of fitting spurious correlations or hidden test-set leakage.
+    </p>
+
+    <p class="note">
+      The diagnostic assumes that features are not deliberately engineered to collude. If features are derived from the same
+      underlying source (e.g., multiple ratios computed from the same balance sheet), correlation is expected and reflects data structure,
+      not model bloat.
+    </p>
+
+    <!-- DELIVERABLES -->
+    <div class="section-label">Deliverables</div>
+    <h2>Output & Artifacts</h2>
+    <p>
+      The project is implemented as a self-contained Jupyter notebook (single-file execution).
+      It includes:
+    </p>
+    <ul style="margin-left: 1.5rem; font-size: 0.95rem; line-height: 1.8; color: #1a1a1a;">
+      <li><strong>Data loading and preprocessing:</strong> Home Credit dataset preparation, feature engineering</li>
+      <li><strong>Baseline model training:</strong> Logistic regression with balanced class weighting</li>
+      <li><strong>Projection pipeline:</strong> Sparse RP dimensionality sweeps with ensemble averaging</li>
+      <li><strong>Visualization:</strong> AUC curves, dimensionality elbow plots, redundancy heatmaps</li>
+      <li><strong>Compliance report:</strong> Structured output summarizing regulatory findings</li>
+      <li><strong>Dependencies:</strong> scikit-learn, pandas, numpy, matplotlib</li>
+    </ul>
+
+    <!-- REGULATORY CONTEXT -->
+    <div class="section-label">Regulatory Context</div>
+    <h2>Basel IRB & IFRS 9 Alignment</h2>
+    <p>
+      This diagnostic directly addresses Basel III IRB validation requirements, which mandate:
+    </p>
+    <ul style="margin-left: 1.5rem; font-size: 0.95rem; line-height: 1.8; color: #1a1a1a;">
+      <li><strong>Stability testing:</strong> Models must remain stable under economic stress (addressed by redundancy reduction)</li>
+      <li><strong>Predictive power:</strong> Metrics like AUC must be documented and defended (quantified here)</li>
+      <li><strong>Feature justification:</strong> Every feature must have a documented business and statistical rationale (this tool justifies exclusion of redundant ones)</li>
+      <li><strong>Transparency:</strong> Model complexity must be communicated to risk committees and regulators (the redundancy ratio is the key metric)</li>
+    </ul>
+
+    <p>
+      Similarly, IFRS 9 Expected Credit Loss (ECL) models rely on stable, well-calibrated PD estimates.
+      Over-parameterized models fail in out-of-sample periods and regulatory backtests. This diagnostic
+      provides quantitative evidence that the model is appropriately tuned.
+    </p>
+
+  </main>
+</body>
+
+</html>
