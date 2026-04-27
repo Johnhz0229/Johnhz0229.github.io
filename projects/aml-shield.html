@@ -296,7 +296,7 @@
     </div>
     <h1 class="project-title">AML Shield</h1>
     <p class="project-subtitle">
-      An AI-powered anti-money laundering compliance platform built for <a href="https://www.bafin.de/EN/Aufsicht/GeldwaescheFinanzierung/geldwaeschefinanzierung_node.html" target="_blank">BaFin</a>-regulated German financial institutions. A conditional <a href="https://arxiv.org/abs/2210.03629" target="_blank">ReAct agent</a> (Reason + Act) combines Claude with an XGBoost classifier to deliver explainable transaction risk decisions grounded in live regulatory citations — from German GwG to FATF Recommendations to EU 6AMLD — and produces BaFin-format SAR reports with full, immutable audit trails.
+      An AI-powered AML compliance platform for <a href="https://www.bafin.de/EN/Aufsicht/GeldwaescheFinanzierung/geldwaeschefinanzierung_node.html" target="_blank">BaFin</a>-regulated German financial institutions. A conditional <a href="https://arxiv.org/abs/2210.03629" target="_blank">ReAct agent</a> combines Claude Haiku with an XGBoost classifier to deliver explainable transaction risk decisions grounded in live regulatory citations — from GwG to FATF to EU 6AMLD — producing BaFin-format SAR reports with immutable audit trails.
     </p>
     <div class="link-row">
       <a href="https://github.com/Johnhz0229/aml-shield" target="_blank" class="proj-link">GitHub ↗</a>
@@ -318,7 +318,7 @@
     <div class="section-label">Regulatory Framework</div>
     <h2>Legal Grounding</h2>
     <p>
-      Every decision AML Shield produces is anchored to a specific statutory obligation. The platform embeds regulatory citations directly into the agent's reasoning chain rather than treating compliance as a post-hoc annotation. The primary framework is German law (<a href="https://www.gesetze-im-internet.de/gwg_2017/" target="_blank">GwG</a>), supplemented by <a href="https://www.fatf-gafi.org/en/topics/fatf-recommendations.html" target="_blank">FATF</a> standards and EU directives where they impose a higher obligation.
+      Every decision is anchored to a specific statutory obligation. The primary framework is German law (<a href="https://www.gesetze-im-internet.de/gwg_2017/" target="_blank">GwG</a>), supplemented by <a href="https://www.fatf-gafi.org/en/topics/fatf-recommendations.html" target="_blank">FATF</a> standards and EU directives where they impose a higher obligation. Citations are embedded in the agent's reasoning chain — compliance is not a post-hoc annotation.
     </p>
     <table class="reg-table">
       <thead>
@@ -417,7 +417,7 @@
     <div class="section-label">Machine Learning</div>
     <h2>XGBoost Classifier</h2>
     <p>
-      The risk scoring model is an <a href="https://xgboost.readthedocs.io/en/stable/" target="_blank">XGBoost</a> binary classifier trained to distinguish legitimate transactions from suspicious ones. It is trained on the <a href="https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml" target="_blank">IBM AMLworld dataset</a> (NeurIPS 2023) — a six-file CSV collection of high/low-income transaction categories at small, medium, and large volume tiers. When real data is unavailable, the pipeline falls back to generating 2,000 synthetic transactions.
+      The risk scoring model is an <a href="https://xgboost.readthedocs.io/en/stable/" target="_blank">XGBoost</a> binary classifier trained on the <a href="https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml" target="_blank">IBM AMLworld dataset</a> (NeurIPS 2023). When real data is unavailable, the pipeline falls back to generating 2,000 synthetic transactions.
     </p>
 
     <h3>Training Data</h3>
@@ -507,7 +507,7 @@
 
     <h3>SHAP Explainability</h3>
     <p>
-      Every prediction is accompanied by <a href="https://shap.readthedocs.io/en/latest/" target="_blank">SHAP (SHapley Additive exPlanations)</a> values — a game-theoretic approach that assigns each feature a contribution to the final score. This satisfies <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank">EU AI Act</a> interpretability requirements and provides compliance officers with an auditable explanation for every automated decision.
+      Every prediction is accompanied by <a href="https://shap.readthedocs.io/en/latest/" target="_blank">SHAP</a> values — a game-theoretic approach assigning each feature a contribution to the final score. This satisfies <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank">EU AI Act</a> interpretability requirements and provides compliance officers with auditable explanations.
     </p>
 
     <h3>Reference Case: Iran Wire Transfer</h3>
@@ -579,7 +579,7 @@
     <div class="section-label">Under the Hood — AI Engine</div>
     <h2>The ReAct Agent</h2>
     <p>
-      The platform's decision engine is built on the <a href="https://arxiv.org/abs/2210.03629" target="_blank">ReAct</a> (Reasoning + Acting) pattern — a framework where a language model alternates between <em>thinking</em> about what to do and <em>calling tools</em> to do it. Each tool result feeds back into the model's context, allowing it to update its risk assessment before deciding the next step. AML Shield's loop runs up to 10 iterations and uses <a href="https://docs.anthropic.com/en/docs/build-with-claude/tool-use" target="_blank">Claude Haiku</a> via the Anthropic tool-use API.
+      The decision engine uses the <a href="https://arxiv.org/abs/2210.03629" target="_blank">ReAct</a> pattern — the model alternates between <em>thinking</em> about what to do and <em>calling tools</em> to do it. Each tool result feeds back into context, updating the risk assessment before the next step. The loop runs up to 10 iterations with <a href="https://docs.anthropic.com/en/docs/build-with-claude/tool-use" target="_blank">Claude Haiku</a> via the Anthropic tool-use API.
     </p>
 
     <!-- ReAct cycle visual -->

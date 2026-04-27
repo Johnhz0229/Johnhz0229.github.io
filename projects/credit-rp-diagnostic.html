@@ -367,19 +367,17 @@
     <div class="section-label">Motivation</div>
     <h2>The Over-Parameterization Problem</h2>
     <p>
-      Credit risk models used in Basel IRB and IFRS 9 frameworks must demonstrate stability and predictive power.
-      A common failure mode is feature bloat: models incorporate dozens of features, many of which are highly correlated
-      or redundant, creating instability under stress testing and regulatory scrutiny. This diagnostic quantifies exactly
-      how many features are truly independent.
+      Credit risk models in Basel IRB and IFRS 9 frameworks must demonstrate stability and predictive power.
+      A common failure mode is feature bloat: dozens of correlated features create instability under stress testing
+      and regulatory scrutiny. This diagnostic quantifies exactly how many features are truly independent.
     </p>
 
     <!-- METHODOLOGY -->
     <div class="section-label">Methodology</div>
     <h2>Sparse Random Projection Approach</h2>
     <p>
-      Rather than traditional dimensionality reduction (PCA, autoencoders), this project uses sparse random projections—
-      a computationally efficient method that preserves pairwise distances while projecting high-dimensional data into
-      lower-dimensional spaces. The approach:
+      Rather than PCA or autoencoders, this project uses sparse random projections —
+      computationally efficient, distance-preserving dimensionality reduction. The approach:
     </p>
 
     <div class="methodology-step">

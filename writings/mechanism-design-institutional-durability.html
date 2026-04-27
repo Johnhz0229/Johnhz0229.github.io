@@ -267,217 +267,40 @@
 
     <div class="article-body">
 
-      <h2>1. Introduction: The Puzzle of Persistence</h2>
+      <p><strong>Core thesis:</strong> Standard mechanism design optimizes for static equilibria under fixed preferences, yet the institutions we most admire persist across centuries of shifting preferences, coalitional realignments, and external shocks. This gap requires a richer theory — one in which institutions achieve durability through three mechanisms: self-enforcement, preference endogeneity, and modularity.</p>
 
-      <p>
-        Institutions are, at their most abstract, rules for structuring human interaction. They specify who may act, under what conditions, and with what consequences for deviation. On this view, designing an institution looks formally similar to designing any other mechanism: one specifies a message space, a set of outcomes, and an outcome function that maps reported types to allocations or decisions. If the mechanism is well-designed, rational agents will find it in their interest to participate honestly, and the resulting outcome will approximate some social optimum. The theory has produced powerful results.
-      </p>
+      <h2>1. The Puzzle of Persistence</h2>
+      <p>Some institutions persist for centuries (Venetian <em>commenda</em>, English common-law property, U.S. Constitution, Catholic Church); others collapse within a generation (Soviet Gosplan, post-colonial constitutions). Standard mechanism design (Gibbard, Myerson, Maskin) operates in a static framework — it doesn't ask whether the mechanism will still function tomorrow, after preferences shift, coalitions realign, or the environment changes. These are not bugs in the theory; they are questions the theory was not built to answer.</p>
 
-      <p>
-        Yet the empirical record of institutional design presents an immediate puzzle. Some institutions persist for centuries — the Venetian commercial partnerships of the medieval Mediterranean, common-law property rights in England, the constitutional structures of the United States, the organizational logic of the Catholic Church. Others, designed with no less technical sophistication and implemented by no less capable administrators, collapse within a generation or even within a decade. The Soviet Union's Gosplan, arguably the most ambitious centralized planning mechanism in history, functioned for seventy years before disintegrating with a speed that surprised nearly everyone. More recently, designed democratic constitutions in many post-colonial states have proven fragile in ways that purely procedural analysis could not have predicted.
-      </p>
+      <h2>2. Mechanism Design Primer</h2>
+      <p>Mechanism design is "reverse game theory": given a desired social outcome, what rules make that outcome the equilibrium? Key results: the revelation principle (Gibbard 1973, Myerson 1979) — restrict attention to direct mechanisms where truth-telling is an equilibrium; incentive compatibility — agents must prefer truth-telling to misrepresentation; implementation theory (Maskin 1977) — for which social choice functions does <em>every</em> equilibrium deliver the desired outcome? Two key limitations: types are taken as exogenous and fixed; the environment is static.</p>
 
-      <p>
-        The puzzle is not merely empirical. It is theoretical. Standard mechanism design, as formalized by Gibbard, Satterthwaite, Myerson, and Maskin, operates within a static framework: there is a designer, a fixed set of agents with private information, and an objective. The designer seeks a mechanism that implements a desired social choice function under incentive-compatible participation. The question of whether the mechanism will still function tomorrow, whether the agents will still find participation optimal after a decade of operating it, whether external shocks will undermine the equilibrium — these questions lie outside the canonical framework. They are not bugs in the theory; they are simply questions the theory was not built to answer.
-      </p>
-
-      <p>
-        This essay uses mechanism design as a lens rather than a solution. The goal is to ask: what features of institutional design contribute to durability, understood as the capacity of a governance structure to maintain its essential functions across time, changing membership, and varying environmental conditions? Three mechanisms of durability emerge from the analysis — self-enforcement, preference endogeneity, and modularity — each of which addresses a distinct failure mode in static mechanism design. Historical cases ground the argument: the Venetian <em>commenda</em> illustrates the self-enforcement logic; the Federal Reserve's post-2008 resilience illustrates preference endogeneity and legitimacy formation; the Soviet Gosplan illustrates the brittleness of over-specified central mechanisms. The conclusion turns to the most pressing contemporary instance of the problem: the design of governance mechanisms for digital platforms and algorithmic systems, where the speed of environmental change may outpace any static design.
-      </p>
-
-
-      <h2>2. A Primer on Mechanism Design</h2>
-
-      <p>
-        Mechanism design inverts the classical question of economic theory. Rather than asking how rational agents behave within a given set of rules, it asks: given a desired social outcome, what rules should the designer impose to make that outcome the equilibrium? The field is sometimes described as "reverse game theory" — the game is endogenous, constructed to achieve a purpose.
-      </p>
-
-      <p>
-        The foundational result is the revelation principle, established by Gibbard (1973) and elaborated by Myerson (1979). It states that for any mechanism that achieves some outcome in a Bayesian equilibrium, there exists a direct mechanism — one in which agents simply report their private types — that achieves the same outcome as a truthful Bayesian equilibrium. The designer need not worry about elaborate message spaces; without loss of generality, she can restrict attention to mechanisms in which truth-telling is an equilibrium strategy. This is an extraordinary simplification: it reduces the problem of finding the best mechanism to the problem of finding the best incentive-compatible direct revelation mechanism.
-      </p>
-
-      <p>
-        Incentive compatibility formalizes the constraint that agents must prefer reporting their true types to misrepresenting them. In the Bayesian version, an agent's expected payoff from truthful reporting — computed over the distribution of other agents' types — must weakly exceed the expected payoff from any deviation. The designer cannot observe private types directly; she can only construct rules that make truthful revelation individually rational. The most celebrated application is Myerson's (1981) optimal auction, which characterizes the revenue-maximizing selling mechanism when the seller faces buyers with privately known valuations. But the framework extends naturally to public goods provision, voting rules, matching markets, and regulatory design.
-      </p>
-
-      <p>
-        Implementation theory, due primarily to Maskin (1977, published 1999), addresses a related but distinct question. Rather than asking what outcomes can be achieved as dominant-strategy or Bayesian equilibria, it asks what social choice functions can be implemented — that is, for which social choice functions does there exist a mechanism in which <em>every</em> equilibrium delivers the desired outcome? Maskin's monotonicity condition characterizes the answer for Nash implementation. The distinction matters: a mechanism that achieves the right outcome in one equilibrium may also have other equilibria that deliver perverse outcomes, and in practice there is no guarantee which equilibrium agents coordinate on.
-      </p>
-
-      <p>
-        The designer's problem, in the canonical framework, is thus: given a social choice function that she wishes to implement, given that agents have privately known types drawn from some distribution, and given that agents are rational utility-maximizers, find a mechanism — a message space and an outcome function — such that equilibrium play of the mechanism generates the desired outcomes. The framework is powerful. Its limitations, for our purposes, are two. First, types are taken as exogenous and fixed; the mechanism does not affect who agents are, only what they do. Second, the environment is static; the mechanism runs once or repeatedly with the same parameters. Both assumptions are analytically convenient and empirically problematic.
-      </p>
-
-
-      <h2>3. The Durability Problem</h2>
-
-      <p>
-        Institutions are not mechanisms in the sense of the previous section. They are ongoing governance structures that operate continuously, across changing populations of participants, under shifting external conditions, and within evolving normative contexts. The difference in scope is not merely quantitative; it changes the nature of the design problem in fundamental ways.
-      </p>
-
-      <p>
-        Consider first the problem of changing preferences. In a standard mechanism, agents' preference types are drawn at the beginning of the game and held fixed. In real institutions, the distribution of preferences changes over time — because populations change, because material interests evolve with economic development, because political movements shift values, because the institution itself generates new interests. An institution that was incentive-compatible for the population of 1787 need not be incentive-compatible for the population of 1887 or 1987. The U.S. Constitution's framers could not write rules optimized for preferences they could not know, which is part of why they provided amendment procedures — but amendment procedures are themselves mechanisms with their own equilibrium properties, and those properties may or may not support adaptation.
-      </p>
-
-      <p>
-        The problem of coalition shifts is related but distinct. Mechanism design in multi-agent settings must grapple with coalitional stability — the possibility that subsets of agents can jointly deviate from the prescribed outcome. A mechanism is in the core if no coalition can block it; it is coalition-proof if no coalition would benefit from a joint deviation. These are strong conditions, and few mechanisms of practical interest satisfy them for all possible coalitions. In dynamic settings, the composition and power of coalitions change over time, so a mechanism that was coalition-proof in the initial period may become blockable as the distribution of power shifts. The designers of the European Economic Community did not anticipate the expansion of the EU to twenty-seven members, and the mechanisms designed for six could not straightforwardly scale.
-      </p>
-
-      <p>
-        External shocks pose a third distinct problem. A mechanism is designed under some implicit model of the environment — the technology, the economy, the geopolitical context. When the environment changes dramatically, the mechanism's equilibrium may disappear entirely rather than merely shift. The Bretton Woods system of fixed exchange rates was designed for a world of limited capital mobility; when capital flows liberalized in the 1970s, the system became unsustainable regardless of any participant's preferences. The mechanism was not "defeated" by strategic behavior — it was rendered obsolete by an environmental shift that its design had not anticipated.
-      </p>
-
-      <p>
-        These three failure modes — preference change, coalition shift, and environmental shock — are related but not identical. A theory of institutional durability must address each, and ideally must identify design features that are robust across all three. The following section proposes three such features.
-      </p>
-
+      <h2>3. The Durability Problem — Three Failure Modes</h2>
+      <p>(a) <strong>Changing preferences:</strong> an institution incentive-compatible in 1787 may not be in 1987. (b) <strong>Coalition shifts:</strong> a mechanism coalition-proof for six members may not scale to twenty-seven. (c) <strong>External shocks:</strong> when the environment changes dramatically (e.g., capital flow liberalization breaking Bretton Woods), the equilibrium may disappear entirely.</p>
 
       <h2>4. Three Mechanisms of Institutional Durability</h2>
 
-      <h3>(a) Self-Enforcement: Making the Mechanism Its Own Policeman</h3>
+      <h3>(a) Self-enforcement: making the mechanism its own policeman</h3>
+      <p>Weingast (1995, 1997): a self-enforcing institution generates its own enforcement incentives — deviation is individually irrational given others' behavior. Constitutions work not because they are self-executing but because they serve as coordination devices: citizens share a focal understanding of what constitutes a violation, enabling collective resistance. Design implication: self-enforcing mechanisms must be <em>legible</em> — rules that are complex or ambiguous cannot serve as focal points for coordination.</p>
 
-      <p>
-        The most fundamental challenge for any institution is enforcement. A mechanism specifies desired behavior and consequences for deviation, but who enforces the consequences? If enforcement is delegated to an external authority — a sovereign, a court, a military — then the institution is only as durable as that authority. Institutions that depend on external enforcement inherit all of the vulnerabilities of the enforcer.
-      </p>
+      <h3>(b) Preference endogeneity: the institution as its own constituency</h3>
+      <p>Institutions shape the preferences that support them. Path dependence (Arthur 1989, David 1985): early adoption creates complementary investments and network effects that make alternatives progressively less attractive. Legitimacy (Suchman 1995): participants come to regard procedures as intrinsically appropriate, reducing monitoring and enforcement costs. Design implication: this often requires institutional <em>thickness</em> — the accumulation of practices, relationships, and embeddedness that makes participation feel natural and alternatives disruptive.</p>
 
-      <p>
-        The concept of self-enforcement, developed most rigorously in political economy by Barry Weingast (1995, 1997), offers an alternative. A self-enforcing institution is one in which the actors who are subject to its rules also have incentives to enforce those rules against deviants — including against the institution's own potential violators. The mechanism generates its own enforcement incentives as a byproduct of its equilibrium structure. No external enforcer is required because deviation is individually irrational given the behavior of other participants.
-      </p>
-
-      <p>
-        Weingast's analysis of constitutional self-enforcement makes the logic precise. A constitution constrains government behavior — preventing the sovereign from arbitrarily expropriating property, suppressing political competition, or violating civil liberties. But constitutions are not self-executing; they are words on paper. For a constitution to constrain government, citizens must be willing to resist governmental violations. The coordination problem is acute: individual resistance to government overreach is costly and futile unless other citizens coordinate to resist simultaneously. If each citizen expects others to acquiesce, acquiescence is individually rational, the constitution is unenforceable, and the government can violate it at will.
-      </p>
-
-      <p>
-        The self-enforcement equilibrium requires that citizens share a focal understanding of what constitutes a constitutional violation, and that this shared understanding creates the coordination necessary for collective resistance. The constitution, on this view, is not merely a description of rules — it is a coordination device that allows citizens to identify violations and organize responses. Durability follows: as long as the focal point remains operative, as long as citizens share the relevant understanding and believe that others share it, the equilibrium supports constitutional constraint without any external enforcer.
-      </p>
-
-      <p>
-        The design implication is important. Self-enforcing mechanisms must be legible to their participants. Rules that are complex, ambiguous, or accessible only to specialists cannot serve as focal points for coordination. The durability of common-law property rights owes something to their relative simplicity — most participants understand what the rules prohibit, which makes violations recognizable and resistance coordinatable. Over-complex mechanisms, precisely because they are illegible to ordinary participants, forfeit this self-enforcement property.
-      </p>
-
-      <h3>(b) Preference Endogeneity: The Institution as Its Own Constituency</h3>
-
-      <p>
-        Standard mechanism design treats preferences as fixed inputs. An institution that survives dynamically, however, typically does so in part because it has shaped the preferences of the agents who operate within it. This is the mechanism of preference endogeneity: the institution transforms actors' interests in ways that increase the probability of the institution's own survival.
-      </p>
-
-      <p>
-        The theoretical foundation draws on path dependence, as formalized by Arthur (1989) and David (1985) in economic contexts, and on the political economy of legitimacy, analyzed by Suchman (1995) and elaborated in historical-institutionalist scholarship. Path dependence captures the idea that early choices generate increasing returns — not merely because of sunk costs, but because adoption creates complementary investments, learning, and network effects that make alternatives progressively less attractive. An institution that succeeds in establishing itself generates constituencies — individuals and organizations whose material interests are tied to the institution's continuation — and norms of appropriate behavior that make alternatives seem illegitimate.
-      </p>
-
-      <p>
-        The legitimacy mechanism is distinct from, though complementary to, material interest. An institution achieves legitimacy when participants come to regard its procedures as intrinsically appropriate, not merely as constraints that happen to be in place. Legitimate institutions benefit from a form of self-reinforcing compliance: participants follow the rules not only because they expect enforcement but because they believe the rules are right, and their belief is sustained by observing others also comply. Legitimacy reduces the monitoring and enforcement costs required to sustain an institution, which in turn reduces the resources required for the institution's survival.
-      </p>
-
-      <p>
-        Preference endogeneity has a design implication that is almost the inverse of the self-enforcement logic. Self-enforcement requires legibility — simple, recognizable rules. Preference endogeneity is often facilitated by institutional thickness: the accumulation of practices, ceremonies, histories, and embedded relationships that make participation feel natural and alternatives seem disruptive. Institutions that generate thick social embeddedness are harder to replace not because their rules are better specified but because removing them requires disrupting a dense web of complementary arrangements. The durability is structural, not procedural.
-      </p>
-
-      <h3>(c) Modularity and Adaptive Capacity</h3>
-
-      <p>
-        The third mechanism addresses environmental change directly. A well-designed institution has a stable core — a set of rules and principles whose violation would fundamentally alter the institution's character — surrounded by an adaptive periphery of secondary rules and procedures that can be modified in response to changing conditions without destabilizing the core. This architectural feature, which can be called modularity following the software engineering literature that Baldwin and Clark (2000) drew on in their analysis of organizational design, allows institutions to absorb shocks through peripheral adaptation rather than core collapse.
-      </p>
-
-      <p>
-        The distinction between core and periphery is not always obvious in advance, and it may itself be contested. But the structural principle is clear: if every element of an institutional design is equally fundamental, then any deviation requires either wholesale replacement or systematic violation. Either outcome is destabilizing. An institution with no adaptive capacity is brittle — it survives unchanged so long as the environment matches the design parameters, and fails when the environment deviates.
-      </p>
-
-      <p>
-        Constitutional orders illustrate the modular principle. Most durable constitutions specify amendment procedures that are demanding but not impossible. The demanding threshold protects the core from frequent revision; the non-impossibility of amendment provides a release valve for pressure that would otherwise accumulate until it found expression through less legitimate channels. The U.S. amendment procedure — requiring supermajorities in Congress and ratification by three-quarters of states — is widely criticized as too demanding, but it has produced a document that has remained in force for over two centuries while accommodating major social transformations. The demanding threshold has not prevented adaptation; it has channeled adaptation through legitimate procedures.
-      </p>
-
-      <p>
-        The modular design principle implies something about what should be specified in the core versus the periphery. Rules governing the distribution of power, the resolution of fundamental conflicts, and the conditions of legitimate authority belong in the core and should be maximally stable. Rules governing specific procedures, technical details, and administrative arrangements belong in the periphery and should be easily revisable. Mechanisms that reverse this ordering — specifying technical details with constitutional rigidity while leaving power distributions ambiguous — tend to produce the worst of both worlds: brittleness on matters that require flexibility, and instability on matters that require commitment.
-      </p>
-
+      <h3>(c) Modularity and adaptive capacity</h3>
+      <p>Durable institutions have a stable core + adaptive periphery. The core (power distribution, conflict resolution, conditions of legitimate authority) should be maximally stable; the periphery (specific procedures, technical details, administrative arrangements) should be easily revisable. Without modularity, every adaptation requires wholesale replacement — the institution is brittle. Constitutional amendment procedures exemplify this: demanding enough to protect the core, possible enough to channel pressure through legitimate channels.</p>
 
       <h2>5. Historical Cases</h2>
+      <ul>
+        <li><strong>Venetian <em>commenda</em> (~500 years):</strong> Self-enforcement through reputation in dense merchant communities (cheating tractators couldn't attract future capital). Adaptive capacity through flexible contract terms (profit ratios, routes, goods all varied while the core capital/labor/profit-sharing structure remained invariant).</li>
+        <li><strong>Federal Reserve post-2008:</strong> Preference endogeneity in action — unconventional interventions (QE, emergency facilities) became normalized as a permanent part of the toolkit. The Fed shaped the interpretive categories through which its own actions were evaluated, and its constituency broadened as new stakeholders acquired interests in its continuation.</li>
+        <li><strong>Soviet Gosplan:</strong> The opposite pathology — an over-specified mechanism with no adaptive periphery. Every adaptation required central authorization; every local deviation was a violation. When accumulated mismatches between plan targets and economic reality became unsustainable, there was no peripheral mechanism for adjustment — only systemic failure.</li>
+      </ul>
 
-      <h3>The Venetian Commenda</h3>
+      <h2>6. The Core Tension: Commitment vs. Adaptability</h2>
+      <p>Commitment generates credibility (enables long-term investment, regulatory reliance, constitutional participation), but is costly when the committed position turns out to be wrong. Over-specified mechanisms are brittle; under-specified mechanisms drift. The design challenge is to precommit on the right dimensions — solving known temptation problems without preventing adaptation to genuinely new circumstances.</p>
 
-      <p>
-        The <em>commenda</em> was a contractual form for organizing long-distance trade that emerged in Venice and other Italian city-states around the ninth and tenth centuries and persisted, with variations, until roughly the fourteenth and fifteenth centuries — a lifespan of five hundred years that makes it one of the most durable commercial mechanisms in recorded history. Its basic structure was simple: an investing partner (<em>commendator</em>) provided capital; a traveling partner (<em>tractator</em>) provided labor and undertook the voyage. Profits were divided according to a schedule that varied by contract type; the traveling partner bore the risk of loss only to the extent of his own contributed capital, if any.
-      </p>
-
-      <p>
-        The <em>commenda</em>'s durability across five centuries of changing trade conditions, political environments, and commercial technologies illustrates all three mechanisms identified above. Its self-enforcement properties derived from the tight relationship between reputation and repeat business in the small, dense merchant communities of the medieval Mediterranean. The tractator who cheated his commendator found himself unable to attract future capital; the commendator who disputed a legitimate settlement found himself unable to attract future tractators. The mechanism was self-enforcing not because of state power — the Venetian state's capacity for commercial contract enforcement was limited — but because of the reputational sanctions embedded in a repeated-game social structure.
-      </p>
-
-      <p>
-        Its adaptive capacity derived from the flexibility of the contract form itself. The core principle — capital from the commendator, labor from the tractator, profit-sharing — was invariant. The specific profit-sharing ratios, the goods traded, the routes taken, and the duration of ventures all varied freely across contracts. Greif (1989, 1993) has documented how similar contractual logics, embedded in different community structures (the Maghribi traders versus the Genoese), produced different equilibrium outcomes through different enforcement mechanisms — illustrating that the same core design can be instantiated in multiple peripheral forms without losing its essential function.
-      </p>
-
-      <h3>The Federal Reserve Post-2008</h3>
-
-      <p>
-        The Federal Reserve's response to the 2008 financial crisis, and its institutional trajectory in the years that followed, illustrates the preference endogeneity and legitimacy mechanism in a contemporary setting. The crisis posed an existential challenge to the Fed's institutional identity: the scale and nature of its interventions — purchasing mortgage-backed securities, establishing emergency credit facilities for non-bank institutions, expanding its balance sheet from roughly $900 billion to over $2 trillion within a year — had no precedent and no clear statutory authorization. The institution appeared to be improvising, which is precisely the kind of behavior that undermines the rule-bound credibility on which central bank independence depends.
-      </p>
-
-      <p>
-        Yet the Fed emerged from the crisis with its institutional position largely intact, and in some respects enhanced. Its mandate was formally expanded by the Dodd-Frank Act of 2010 to include explicit macroprudential responsibilities. Its balance-sheet operations, initially controversial, became normalized as a permanent part of the central banking toolkit. The explanation lies partly in performance — the US recovery, while slow, was faster than the eurozone's — and partly in legitimacy formation. The Fed's crisis interventions were framed, and largely accepted, as exceptional responses to exceptional circumstances, consistent with the institution's underlying mission even if inconsistent with its prior practice. The institution shaped the interpretive categories through which its own actions were evaluated.
-      </p>
-
-      <p>
-        This is preference endogeneity in action: the Fed's post-crisis behavior changed not only what it did but what actors expected of it and believed it should do. The unconventional became conventional. The constituency for Fed independence, which might have been expected to erode given the apparent violation of its mandate constraints, was instead broadened by the demonstration that the Fed could manage systemic crises — a new function that created new stakeholders with interests in the institution's continuation.
-      </p>
-
-      <h3>The Soviet Gosplan</h3>
-
-      <p>
-        The contrast is provided by Gosplan, the Soviet central planning agency. As a mechanism design problem, central planning was extraordinarily ambitious: the state would elicit information from producers about their production possibilities and consumers about their preferences, aggregate that information centrally, and issue output targets that would coordinate the entire economy. The incentive-compatibility problem was recognized, at least implicitly, by planning theorists — the well-known "ratchet effect" describes how enterprises systematically underreported their production capacity to avoid being assigned higher future targets, a straightforward consequence of the mechanism's failure to make truthful revelation incentive-compatible.
-      </p>
-
-      <p>
-        But the mechanism's fundamental problem was not merely incentive-incompatibility. It was the combination of information complexity and the absence of any adaptive periphery. The output targets specified by Gosplan were not approximate signals around which local actors could exercise discretion; they were mandatory quotas whose fulfillment was monitored and whose non-fulfillment carried penalties. The mechanism was specified with a rigidity that left no room for the local knowledge and initiative that decentralized systems aggregate through prices. When external conditions changed — which they did constantly, given technological change, demand shifts, and the complexity of a modern economy — the mechanism could not adapt without central authorization, and central authorization was slow, politically distorted, and chronically informed by the very agencies whose misreporting had created the problem.
-      </p>
-
-      <p>
-        The Gosplan case illustrates a pathology that is almost the reverse of the self-enforcement failure. The mechanism was not too simple or too legible; it was too specified. Every adaptation required an explicit directive from the center; every local deviation was a violation of the plan. The adaptive capacity that the mechanism needed to survive environmental change was designed out of it. When the accumulated mismatches between plan targets and economic reality became unsustainable, there was no peripheral mechanism through which adjustment could occur. The result was not gradual adaptation but eventual systemic failure.
-      </p>
-
-
-      <h2>6. The Limits: Commitment versus Adaptability</h2>
-
-      <p>
-        The three mechanisms of durability are not costless, and they exist in tension with one another. Self-enforcement through legibility and focal coordination requires relatively stable, simple rules — but simple rules are often too blunt to handle complex environments, and stable rules cannot be easily adapted when circumstances change. Preference endogeneity and legitimacy formation require institutional thickness and embeddedness — but thick institutions are also sticky institutions, resistant to change even when change is warranted. Modularity provides a principled way to distinguish what should be stable from what should be flexible — but the distinction is rarely obvious in advance, and the process of deciding what belongs to the core versus the periphery is itself political and contestable.
-      </p>
-
-      <p>
-        The deep tension is between commitment and adaptability. Commitment is valuable because it generates credibility: an institution whose rules can be easily changed provides weaker guarantees than one whose rules are entrenched. Credible commitment enables cooperation that would otherwise be impossible — long-term investment, reliance on regulatory frameworks, participation in constitutional arrangements. But commitment is costly when the committed position turns out to be wrong: an institution that cannot adapt to changed circumstances will either survive in a dysfunctional form or collapse when the accumulated pressure for change exceeds the institutional capacity to resist.
-      </p>
-
-      <p>
-        The literature on constitutional rigidity versus flexibility makes this tension precise. Elster (1995) and Sunstein (1995) have explored the conditions under which "precommitment" — binding future decision-makers — is welfare-improving versus welfare-reducing. The general answer is that precommitment is beneficial when it solves a known temptation problem (as constitutional constraints on government power address the temptation toward tyranny) and harmful when it prevents adaptation to genuinely new circumstances (as constitutional prohibitions on debt finance have sometimes prevented governments from responding to crises). The design challenge is to precommit on the right dimensions.
-      </p>
-
-      <p>
-        Over-specified mechanisms — those that specify too many parameters with too much rigidity — are brittle. They perform well under the conditions assumed in the design but fail under deviations from those conditions. Under-specified mechanisms — those that leave too much to discretion or leave too many dimensions undefined — suffer from a different pathology: they drift. Without a stable core of entrenched rules, the mechanism's character changes as actors exercise their discretion in self-interested ways, and the institution gradually becomes something different from what was intended, without any explicit decision to change it. Both failure modes are real, and both are visible in institutional histories.
-      </p>
-
-
-      <h2>7. Conclusion: Mechanism Design in the Age of Algorithmic Governance</h2>
-
-      <p>
-        The questions raised in this essay have an obvious contemporary application, which makes them less purely academic than they might appear. Digital platforms — the large-scale online intermediaries that organize communication, commerce, labor markets, and information flows — are, in the relevant sense, mechanisms. They specify rules for participation, information disclosure requirements, outcome functions (what content is amplified, what transactions are facilitated, what prices are charged), and enforcement procedures. They are designed, in the sense that their rules are chosen by someone with objectives. And they are subject to all of the durability challenges analyzed above: changing user preferences, shifting coalitional dynamics among users, advertisers, and regulators, and environmental shocks from technological change.
-      </p>
-
-      <p>
-        The algorithmic governance problem is a mechanism design problem with several features that make it more difficult than the classical case. First, the relevant "types" — users' preferences, values, and private information — are not drawn from a fixed distribution but are actively shaped by the mechanism itself. Recommender systems that optimize for engagement change the preferences of the users they serve; social comparison mechanisms that display others' behavior affect how individuals form beliefs about social norms. The preference-endogeneity mechanism, which we described as a source of institutional durability, becomes a source of concern when it operates in the service of the platform designer's objectives rather than users' welfare.
-      </p>
-
-      <p>
-        Second, the speed of environmental change in digital environments is orders of magnitude faster than in the institutional contexts analyzed above. The <em>commenda</em> had five centuries to adapt gradually; major social media platforms have undergone fundamental transformations in their social function within a decade. Mechanisms designed for one environment — say, a platform primarily used for personal communication — may have profoundly different effects when the same mechanism is applied at larger scale, with a different user population, in a different information environment. The adaptive periphery, if it exists, must adapt on timescales that institutional designers have rarely encountered.
-      </p>
-
-      <p>
-        Third, the legitimacy mechanism operates differently in algorithmic contexts. Traditional institutions derive legitimacy partly from procedural transparency — participants can observe what the rules are and verify that they are being followed. Algorithmic systems are typically opaque: users cannot observe the outcome function, cannot verify that it is being applied consistently, and cannot easily identify when and how the rules have changed. The self-enforcement property that Weingast identified — which requires a legible focal point around which coordination can occur — is difficult to establish when the relevant rules are proprietary, complex, and continuously updated.
-      </p>
-
-      <p>
-        These observations suggest that the normative agenda for mechanism design theory, as applied to digital governance, is both urgent and analytically underdeveloped. The tools of revelation principle, incentive compatibility, and implementation theory are necessary but not sufficient. A richer theory is needed — one that treats the mechanism as operating in a dynamic environment, shaping as well as responding to the preferences of its participants, and facing the commitment-adaptability tradeoff that has defined the most durable institutional designs in history. Whether the field of mechanism design, or the adjacent literatures in computer science and organizational economics, will rise to that challenge in time to inform the governance of systems that are already deeply embedded in social life is an open question. The historical record suggests that institutional designs that ignore these dynamics tend not to survive — or, more precisely, tend to survive in forms that their designers would not have intended.
-      </p>
+      <h2>7. Contemporary Application: Algorithmic Governance</h2>
+      <p>Digital platforms are mechanisms in the relevant sense — they specify participation rules, outcome functions, and enforcement procedures. Three features make this harder than the classical case: (a) user preferences are actively shaped by the mechanism itself (recommender systems, social comparison); (b) environmental change is orders of magnitude faster than in historical institutional contexts; (c) algorithmic opacity undermines the legibility needed for self-enforcement. The normative agenda for mechanism design, applied to digital governance, is both urgent and underdeveloped — and the historical record suggests that designs ignoring these dynamics tend not to survive in forms their designers intended.</p>
 
     </div>
 

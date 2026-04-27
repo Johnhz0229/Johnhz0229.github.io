@@ -452,23 +452,12 @@
     <div class="section-label">Background</div>
     <h2>Why I Built This</h2>
     <p>
-      I wanted a dead-simple way to know my calorie balance at any point in the day — not a full nutrition
-      app, just a quick answer to "am I in a deficit today?"
-    </p>
-    <p>
-      My first approach was a dedicated calorie-tracking app. The workflow was: search for the food,
-      find the right entry, log the gram weight, repeat for every ingredient. It worked, but the lookup
-      friction was real — and exporting data in any usable format was painful enough that I stopped doing it.
-    </p>
-    <p>
-      I switched to a personal Excel sheet with hand-written formulas. That removed the export problem,
-      but I still had to look up macro values for every food item, either through an AI chat or a nutrition
-      database, then copy numbers into cells. Two tools, two windows, lots of switching.
-    </p>
-    <p>
-      The fix was obvious: collapse everything into one step. Describe the meal in whatever language you think in,
-      let DeepSeek handle the lookup and calculation, store the result automatically, and surface it as a clean
-      dashboard with a one-click CSV export. That's Cut Tracker.
+      I wanted a dead-simple way to know my calorie balance at any point in the day — not a full nutrition app,
+      just a quick answer to "am I in a deficit today?" Calorie-tracking apps required searching for every food,
+      logging gram weights, and couldn't export data. An Excel sheet fixed the export problem but required looking
+      up macro values for every food item through AI chat or nutrition databases, then copying numbers into cells.
+      The fix: collapse everything into one step. Describe the meal in whatever language you think in, let DeepSeek
+      handle the lookup and calculation, store the result, and surface it as a clean dashboard with one-click CSV export.
     </p>
 
     <div class="section-label">Usage Examples</div>
@@ -476,7 +465,7 @@
 
     <h3>Logging a meal</h3>
     <p style="font-size:0.9rem; color:var(--gray-600); margin-bottom:1rem;">
-      DeepSeek understands any language — log in English, Chinese, Japanese, or whatever comes naturally.
+      Log in any language — English, Chinese, Japanese, or whatever comes naturally.
     </p>
     <div class="example-block">
       <div class="example-label">English input</div>
@@ -537,8 +526,8 @@
     <div class="section-label">Architecture</div>
     <h2>System Overview</h2>
     <p>
-      Cut Tracker is a server-rendered web application with a Python/FastAPI backend, a SQLite database,
-      and an AI integration layer that calls the DeepSeek V3 API for natural language macro parsing.
+      Cut Tracker is a server-rendered web app: Python/FastAPI backend, SQLite database,
+      DeepSeek V3 API for multilingual macro parsing.
       Authentication is session-token-based with bcrypt password hashing and strict user-scoped data isolation.
     </p>
 
@@ -575,10 +564,8 @@
 
     <h3>1. Food Logging via AI</h3>
     <p>
-      Users describe meals in free-form text in any language — English, Chinese, Japanese, or mixed.
-      The input is sent to DeepSeek V3, which returns a structured JSON object with per-item breakdowns:
-      calories, protein, carbohydrates, and fat — both as consumed and per 100g serving.
-      The server validates and stores the result, associating it with the user's session.
+      Free-form meal descriptions in any language are sent to DeepSeek V3, which returns structured JSON
+      with per-item calories, protein, carbs, and fat. The server validates and stores the result.
     </p>
     <p class="note">
       API cost is approximately $0.0001 per log entry. At one log per day, annual cost is under $0.04.
@@ -586,8 +573,7 @@
 
     <h3>2. Energy Accounting Model</h3>
     <p>
-      The core of Cut Tracker is a P&amp;L-style energy balance calculation performed fresh on each dashboard load.
-      The model mirrors how an accountant tracks profit: gross income minus costs equals net position.
+      A P&amp;L-style energy balance calculation performed fresh on each dashboard load.
     </p>
 
     <div class="formula-box">
@@ -604,8 +590,7 @@
 
     <h3>3. NEAT Activity Multipliers</h3>
     <p>
-      Non-Exercise Activity Thermogenesis is captured through a daily activity level selector.
-      Multipliers are applied to BMR to compute baseline expenditure before exercise is added:
+      Multipliers applied to BMR before exercise is added:
     </p>
     <div class="flow-steps">
       <div class="flow-step">
@@ -652,18 +637,14 @@
 
     <h3>5. Multi-user & Admin</h3>
     <p>
-      All data queries are scoped by user ID derived from the session token — no cross-user data leakage is possible
-      through the standard routes. A hidden admin panel at <code>/admin</code> is protected by a separate secret key
-      and provides account creation and deletion capabilities.
+      All data queries are scoped by user ID — no cross-user data leakage. A hidden admin panel at <code>/admin</code> is protected by a separate secret key.
     </p>
 
     <!-- DEPLOYMENT -->
     <div class="section-label">Deployment</div>
     <h2>Infrastructure</h2>
     <p>
-      The application is deployed on Railway, connected directly to the GitHub repository for continuous deployment.
-      The SQLite database file is persisted via a Railway volume mount. Environment variables manage the DeepSeek API
-      key, admin secret, and session signing key — none are committed to the repository.
+      Deployed on Railway with continuous deployment from GitHub. SQLite persisted via Railway volume mount. Environment variables manage API keys and secrets — none committed to the repository.
     </p>
 
     <div class="arch-diagram">

@@ -353,23 +353,18 @@
     <div class="section-label">Motivation</div>
     <h2>Financial Ratio Redundancy in Distress Prediction</h2>
     <p>
-      Financial analysts and machine learning practitioners often compute dozens of ratios from company balance sheets—
-      liquidity ratios, leverage ratios, profitability metrics, efficiency measures, and more. While intuition suggests
-      that more ratios improve prediction, correlation among ratios creates feature bloat that destabilizes models and
-      obscures the true drivers of bankruptcy risk.
-    </p>
-    <p>
-      The Polish Companies Bankruptcy dataset contains 64 financial ratio features with rich structure. This diagnostic
-      asks a simple question: how many of these 64 ratios are truly independent? The answer informs feature selection,
-      model complexity audits, and interpretability.
+      Financial analysts compute dozens of ratios from company balance sheets — liquidity, leverage, profitability, efficiency.
+      While intuition suggests more ratios improve prediction, correlation among them creates feature bloat that destabilizes
+      models and obscures the true drivers of bankruptcy risk. The Polish Companies Bankruptcy dataset contains 64 financial
+      ratio features. This diagnostic asks: how many are truly independent?
     </p>
 
     <!-- METHODOLOGY -->
     <div class="section-label">Methodology</div>
     <h2>Sparse Random Projection Analysis</h2>
     <p>
-      This project applies the same sparse random projection methodology used in credit risk diagnostics, adapted for
-      the bankruptcy prediction domain. The approach quantifies feature redundancy without requiring explicit feature selection.
+      Same methodology as the credit risk diagnostic, adapted for bankruptcy prediction. Quantifies feature redundancy
+      without requiring explicit feature selection.
     </p>
 
     <div class="methodology-step">
@@ -454,23 +449,20 @@
 
     <h3>Feature Selection Guidance</h3>
     <p>
-      A parsimonious model using 50 carefully chosen ratios should achieve comparable predictive power to the full 64-feature model,
-      while offering better generalization, faster inference, and improved interpretability. Practitioners can use this
-      diagnostic as justification for dropping correlated ratios rather than including them for marginal improvements.
+      A parsimonious model using 50 carefully chosen ratios should achieve comparable predictive power to the full 64-feature model
+      with better generalization and interpretability. Practitioners can cite this diagnostic as justification for dropping correlated ratios.
     </p>
 
     <h3>Regulatory Alignment</h3>
     <p>
-      In credit risk and financial regulation, simpler models are preferred when performance is equivalent. Basel III,
-      Sarbanes-Oxley (SOX), and other frameworks reward transparency and parsimony. Demonstrating that 21.9% of features
-      are redundant provides a quantitative rationale for model simplification.
+      Basel III, Sarbanes-Oxley, and other frameworks reward transparency and parsimony when performance is equivalent.
+      Demonstrating that 21.9% of features are redundant provides quantitative rationale for model simplification.
     </p>
 
     <h3>Out-of-Sample Stability</h3>
     <p>
-      High-dimensional models with correlated features are prone to overfitting and performance degradation on new
-      economic regimes (e.g., recessions, industry downturns). Pruning redundant features improves robustness and
-      reduces the risk of "spurious correlation" failures.
+      High-dimensional models with correlated features overfit and degrade on new economic regimes. Pruning redundant
+      features improves robustness and reduces the risk of spurious correlation failures.
     </p>
 
     <p class="note">
